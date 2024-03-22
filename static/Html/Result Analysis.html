@@ -1,0 +1,675 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA/SGPA Calculator</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            width: 100vw;
+            height: 100vh;
+            background: url("{% static 'background.png' %}");
+            background-position: center;
+            background-size: cover;
+            overflow: hidden;
+        }
+
+        .container{
+            margin: 2rem auto;
+        }
+
+        .header{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo{
+            width: 4rem;
+            margin-right: 1rem;
+        }
+
+        .text h1, .text h3{
+            font-weight: 550;
+            text-transform: uppercase;
+            font-family: sans-serif;
+        }
+
+        .main-heading{
+            font-size: 1.7rem;
+        }
+
+        .sub-heading{
+            font-size: 1.5rem;
+        }
+
+        .main{
+            background-color: bisque;
+            border-radius: .2rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 2rem;
+        }
+
+        .calculation-part h1{
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin-right: 1rem;
+            display: inline;
+        }
+
+        .select{
+            display: flex;
+            justify-content: left;
+            align-items: center;
+        }
+
+        .select p{
+            margin-right: 1rem;
+            font-size: 1rem;
+        }
+
+        .select input{
+            margin-bottom: 1rem;
+        }
+
+        .calculation-text{
+            font-size: 1.1rem;
+            margin-top: 1.2rem;
+            letter-spacing: .02rem;
+            font-weight: 500;
+            color: #bb0a0a;
+        }
+
+        .btns button{
+            width: 7rem;
+            font-size: 1rem;
+            padding: 0.5rem;
+            margin-top: 2rem;
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        .sgpa-popup{
+            background-color: transparent;
+            display: none;
+        }
+
+        .sgpa-clicked .sgpa-popup{
+            display: block;
+        }
+
+        .file-type h1{
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin-right: 1rem;
+            display: inline;
+        }
+
+        .sgpa-select{
+            display: flex;
+            justify-content: left;
+            align-items: center;
+        }
+
+        .sgpa-select p{
+            margin-right: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .sgpa-select input{
+            margin-bottom: 1rem;
+        }
+
+        .regular-popup{
+            background-color: transparent;
+            display: none;
+        }
+
+        .regular-clicked .regular-popup{
+            display: block;
+        }
+
+        .upload-label{
+            display: inline-block;
+            background-color: #eee;
+            padding: 0.1rem 0.3rem;
+            border: .05rem solid #000;
+            font-size: .9rem;
+            cursor: pointer;
+            margin-top: .3rem;
+            margin-left: 4rem;
+        }
+
+        #file-chosen{
+            margin-left: 0.3rem;
+        }
+
+        .analysis{
+            margin-top: 1rem;
+            margin-left: 2rem;
+        }
+
+        .supply-popup{
+            background-color: transparent;
+            display: none;
+        }
+
+        .supply-clicked .supply-popup{
+            display: block;
+        }
+
+        .cgpa-popup{
+            background-color: transparent;
+            display: none;
+        }
+
+        .checks{
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .left p, .right p{
+            margin: .2rem;
+        }
+
+        .checks input{
+            margin-right: .3rem;
+        }
+
+        .cgpa-content h3{
+            font-weight: 500;
+            display: inline;
+        }
+
+        .cgpa-content input{
+            margin-left: .8rem;
+        }
+
+        .cgpa-clicked .cgpa-popup{
+            display: block;
+        }
+
+        .content-text{
+            display: inline; 
+            font-size: .8em;
+        }
+
+        @media only screen and (max-width: 1128px) and (min-width: 320px){
+            body{
+                width: 100vw;
+                height: 100vh;
+                background-repeat: no-repeat;
+            }
+
+            .container{
+                margin: 1rem auto;
+            }
+
+            .header{
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+
+            .logo{
+                width: 2.5rem;
+            }
+
+            .main-heading{
+                font-size: 1.1rem;
+                margin-bottom: .5rem;
+            }
+
+            .sub-heading{
+                font-size: 1rem;
+            }
+
+            .main{
+                border-radius: .2rem;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -40%);
+                padding: .5rem;
+                width: 18rem;
+            }
+
+            .calculation-part h1{
+                font-size: 1.1rem;
+            }
+
+            .select p{
+                font-size: .8rem;
+            }
+
+            .select input{
+                height: 0.6rem;
+                width: 0.6rem;
+                margin-bottom: .8rem;
+            }
+
+            .calculation-text{
+                letter-spacing: 0;
+                font-size: .8rem;
+            }
+
+            .btns button{
+                padding: .3rem;
+                margin: 0;
+                width: 4.3rem;
+                font-size: .6rem;
+                margin-top: 1.5rem;
+                margin-left: 0rem;
+                margin-right: 1.5rem;
+            }
+
+            .file-type h1{
+                font-size: 1rem;
+            }
+
+            .sgpa-select p{
+                margin-top: .3rem;
+                margin-right: .5rem;
+                font-size: .75rem;
+            }
+
+            .sgpa-select input{
+                height: 0.6rem;
+                width: 0.6rem;
+            }
+
+            .upload-label{
+                padding: 0.1rem;
+                font-size: .6rem;
+                margin-top: .2rem;
+                margin-left: 1rem;
+            }
+
+            #file-chosen{
+                margin-left: 0.2rem;
+            }
+
+            .regular-popup p{
+                font-size: .7rem;
+            }
+
+            .analysis{
+                margin-top: .8rem;
+                margin-left: 1rem;
+                font-size: .6rem;
+            }
+
+            .supply-popup p{
+                font-size: .7rem;
+                margin-bottom: .3rem;
+            }
+
+            .checks input{
+                height: .6rem;
+                width: .6rem;
+                margin-right: .1rem;
+            }
+
+            .checks h3{
+                font-size: .7rem;
+            }
+
+            .left, .right{
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+            }
+
+            .left p, .right p{
+                margin: .1rem;
+                font-size: .6rem;
+            }
+
+            .cgpa-content input{
+                margin-left: .2rem;
+            }
+
+            .content-text{
+                font-size: .6em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <header class="header">
+            <img src="{% static 'JNTUK logo.png' %}" class="logo">
+            <div class="text">
+                <h1 class="main-heading">University College of Engineering Narasaraopet</h1>
+                <h2 class="sub-heading">Jawaharlal Nehru Technological University Kakinada</h2>
+            </div>
+        </header>
+        <div class="main" id="main">
+            <div class="calculation-part" id="calculation-part">
+                <h1>Calculation Mode:</h1>
+                <div class="select" id="select">
+                    <label for="radio"></label>
+                    <p><input type="radio" name="radio" id="sgpa"> SGPA</p>
+                    <p><input type="radio" name="radio" id="cgpa"> CGPA</p>
+                </div>
+            </div>
+            <p id="calculation-text" class="calculation-text" style="display: none;"></p>
+            <div class="btns" id="btns">
+                <button class="user-guide" id="user-guide">User Guide</button>
+                <button class="get-result" id="get-result" onclick="getResult()">Get Result</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="sgpa-popup" id="sgpa-popup">
+        <div class="file-type">
+            <h1>File Type:</h1>
+            <div class="sgpa-select">
+                <label for="file"></label>
+                <p><input type="radio" name="file" id="regular"> Regular</p>
+                <p><input type="radio" name="file" id="supply"> Supplementary/Revaluation</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="regular-popup" id="regular-popup">
+        <div>
+            <p>Upload the result pdf
+                <input type="file" accept=".pdf" id="regular-class" hidden>
+                <label for="regular-class" class="upload-label" id="upload-regular-label">Upload file</label>
+                <span id="regular-file-chosen" class="file-chosen"></span>
+            </p>
+        </div>
+        <div>
+            <p>Analysis Type: 
+                <select name="analysis-type" id="analysis-type" class="analysis">
+                    <option value="none" selected disabled hidden><p style="font-size: smaller;">Select</p></option>
+                    <option value="Overall Analysis"><p style="font-size: smaller;">Overall Analysis</p></option>
+                    <option value="CSE"><p style="font-size: smaller;">CSE Analysis</p></option>
+                    <option value="ECE"><p style="font-size: smaller;">ECE Analysis</p></option>
+                    <option value="EEE"><p style="font-size: smaller;">EEE Analysis</p></option>
+                    <option value="MECH"><p style="font-size: smaller;">MECH Analysis</p></option>
+                    <option value="CIVIL"><p style="font-size: smaller;">CIVIL Analysis</p></option>
+                </select>
+            </p>
+        </div>
+    </div>
+
+    <div class="supply-popup" id="supply-popup">
+        <div>
+            <p class="first">Upload the result pdf
+                <input type="file" accept=".pdf" id="supply-class" hidden>
+                <label for="supply-class" class="upload-label" id="upload-supply-label">Upload file</label>
+                <span id="supply-file-chosen" class="file-chosen"></span>
+            </p>
+        </div>
+        <div>
+            <p>Upload the regular GPA excel
+                <input type="file" accept=".xlsx" id="supply-gpa-class" hidden style="margin-left: 1em;">
+                <label for="supply-gpa-class" class="upload-label" id="upload-gpa-label">Upload file</label>
+                <span id="supply-gpa-file-chosen" class="file-chosen"></span>
+            </p>
+        </div>
+    </div>
+
+    <div class="cgpa-popup" id="cgpa-popup">
+        <div class="cgpa-content">
+            <div class="checks">
+                <h3>Choose Semeters for CGPA: </h3>
+                <div class="left" id="sem-file">
+                    <p><input type="checkbox" name="cb" id="check1" value="1" onchange="toggleContent('check1', value)">Sem 1</p>
+                    <p><input type="checkbox" name="cb" id="check3" value="3" onchange="toggleContent('check3', value)">Sem 3</p>
+                    <p><input type="checkbox" name="cb" id="check5" value="5" onchange="toggleContent('check5', value)">Sem 5</p>
+                    <p><input type="checkbox" name="cb" id="check7" value="7" onchange="toggleContent('check7', value)">Sem 7</p>
+                </div>
+                <div class="right" id="sem-file">
+                    <p><input type="checkbox" name="cb" id="check2" value="2" onchange="toggleContent('check2', value)">Sem 2</p>
+                    <p><input type="checkbox" name="cb" id="check4" value="4" onchange="toggleContent('check4', value)">Sem 4</p>
+                    <p><input type="checkbox" name="cb" id="check6" value="6" onchange="toggleContent('check6', value)">Sem 6</p>
+                    <p><input type="checkbox" name="cb" id="check8" value="8" onchange="toggleContent('check8', value)">Sem 8</p>
+                </div>
+            </div>
+
+            <div class="text-content">
+                <div id="content1" class="left-content" style="display: none;">
+                    <p class="content-text">Sem 1 SGPA File: </p>
+                    <input type="file" accept=".xlsx" id="cgpa-class1" hidden>
+                    <label for="cgpa-class1" class="upload-label" id="upload-label1">Upload file</label>
+                    <span id="cgpa-file-chosen" class="file-chosen"></span>
+                </div>    
+                <div id="content2" class="right-content" style="display: none;">
+                    <p class="content-text">Sem 2 SGPA File: </p>
+                    <input type="file" accept=".xlsx" id="cgpa-class2" hidden>
+                    <label for="cgpa-class2" class="upload-label" id="upload-label2">Upload file</label>
+                    <span id="cgpa-file-chosen" class="file-chosen"></span>
+                </div>    
+                <div id="content3" class="left-content" style="display: none;">
+                    <p class="content-text">Sem 3 SGPA File: </p>
+                    <input type="file" accept=".xlsx" id="cgpa-class3" hidden>
+                    <label for="cgpa-class3" class="upload-label" id="upload-label3">Upload file</label>
+                    <span id="cgpa-file-chosen" class="file-chosen"></span>
+                </div>    
+                <div id="content4" class="right-content" style="display: none;">
+                    <p class="content-text">Sem 4 SGPA File: </p>
+                    <input type="file" accept=".xlsx" id="cgpa-class4" hidden>
+                    <label for="cgpa-class4" class="upload-label" id="upload-label4">Upload file</label>
+                    <span id="cgpa-file-chosen" class="file-chosen"></span>
+                </div>    
+                <div id="content5" class="left-content" style="display: none;">
+                    <p class="content-text">Sem 5 SGPA File: </p>
+                    <input type="file" accept=".xlsx" id="cgpa-class5" hidden>
+                    <label for="cgpa-class5" class="upload-label" id="upload-label5">Upload file</label>
+                    <span id="cgpa-file-chosen" class="file-chosen"></span>
+                </div>    
+                <div id="content6" class="right-content" style="display: none;">
+                    <p class="content-text">Sem 6 SGPA File: </p>
+                    <input type="file" accept=".xlsx" id="cgpa-class6" hidden>
+                    <label for="cgpa-class6" class="upload-label" id="upload-label6">Upload file</label>
+                    <span id="cgpa-file-chosen" class="file-chosen"></span>
+                </div>    
+                <div id="content7" class="left-content" style="display: none;">
+                    <p class="content-text">Sem 7 SGPA File: </p>
+                    <input type="file" accept=".xlsx" id="cgpa-class7" hidden>
+                    <label for="cgpa-class7" class="upload-label" id="upload-label7">Upload file</label>
+                    <span id="cgpa-file-chosen" class="file-chosen"></span>
+                </div>  
+                <div id="content8" class="right-content" style="display: none;">
+                    <p class="content-text">Sem 8 SGPA File: </p>
+                    <input type="file" accept=".xlsx" id="cgpa-class8" hidden>
+                    <label for="cgpa-class8" class="upload-label" id="upload-label8">Upload file</label>
+                    <span id="cgpa-file-chosen" class="file-chosen"></span>
+                </div>      
+            </div>            
+        </div>
+    </div>
+
+    <!-- <script src="script.js"></script> -->
+    <script>
+        const container = document.getElementById("container");
+        const calculationText = document.getElementById("calculation-text");
+
+        const SgpaPopup = document.getElementById("sgpa-popup");
+        const sgpaBtn = document.getElementById("sgpa");
+
+        function sgpaFunction(){
+            const node = document.getElementById("calculation-part");
+            node.appendChild(SgpaPopup);
+            node.addEventListener('click', ()=> {
+                CgpaPopup.style.display = "none";
+                calculationText.style.display = "none";
+                SgpaPopup.style.display = "block";
+                sgpaBtn.disabled = true;
+            })
+        }
+
+        sgpaBtn.addEventListener('click', sgpaFunction);
+
+        const regularPopup = document.getElementById("regular-popup");
+        const regular = document.getElementById("regular");
+
+        function regularFunction(){
+            const newNode = document.getElementById("calculation-part");
+            newNode.appendChild(regularPopup);
+            newNode.addEventListener('click', ()=> {
+                supplyPopup.style.display = "none";
+                regularPopup.style.display = "block";
+            })
+        }
+
+        regular.addEventListener('click', regularFunction);
+
+        const regularBtn = document.getElementById('regular-class');
+
+        regularBtn.addEventListener('change', function(){
+            document.getElementById('upload-regular-label').innerHTML = this.files[0].name;
+        })
+
+        const supplyPopup = document.getElementById("supply-popup")
+        const supply = document.getElementById("supply");
+
+        function supplyFunction(){
+            const node = document.getElementById("calculation-part");
+            node.appendChild(supplyPopup);
+            node.addEventListener('click', ()=> {
+                regularPopup.style.display = "none";
+                supplyPopup.style.display = "block";
+            })
+        }
+
+        supply.addEventListener('click', supplyFunction);
+
+        const supplyBtn = document.getElementById('supply-class');
+
+        supplyBtn.addEventListener('change', function(){
+            document.getElementById('upload-supply-label').innerHTML = this.files[0].name;
+        })
+
+        const supplyGpaBtn = document.getElementById('supply-gpa-class');
+
+        supplyGpaBtn.addEventListener('change', function(){
+            document.getElementById('upload-gpa-label').innerHTML = this.files[0].name;
+        })
+
+        const CgpaPopup = document.getElementById("cgpa-popup");
+        const cgpaBtn = document.getElementById("cgpa");
+
+        function cgpaFunction(){
+            const node = document.getElementById("calculation-part");
+            node.appendChild(CgpaPopup);
+            node.addEventListener('click', ()=> {
+                SgpaPopup.style.display = "none";
+                calculationText.style.display = "none";
+                regularPopup.style.display = "none";
+                supplyPopup.style.display = "none";
+                sgpaBtn.disabled = false;
+                CgpaPopup.style.display = "block";
+            })
+        }
+
+        cgpaBtn.addEventListener('click', cgpaFunction);
+
+        function getResult() {
+            calculationText.style.display = "block";
+            if (CgpaPopup.style.display != "block" && SgpaPopup.style.display != "block"){
+                calculationText.innerHTML = `<p>Please select Calculation Mode</p>`;
+            }
+            else if (CgpaPopup.style.display != "block" && SgpaPopup.style.display == "block"){   
+                if (regularPopup.style.display != "block" && supplyPopup.style.display != "block"){
+                    calculationText.innerHTML = `<p>Please select File type</p>`;
+                }
+                else if(regularPopup.style.display == "block" && supplyPopup.style.display != "block") {
+                    if(document.getElementById("regular-class").value == "") {
+                        calculationText.innerHTML = `<p>Please upload result pdf file</p>`;
+                    }
+                    else {
+                        if(document.getElementById("analysis-type").value == "none") {
+                            calculationText.innerHTML = `<p>Please select analysis type</p>`;
+                        }
+                        else{
+                            calculationText.style.display = "none";
+                        }
+                    }
+                }
+                else{
+                    if(document.getElementById("supply-class").value == "") {
+                        calculationText.innerHTML = `<p>Please upload result pdf file</p>`;
+                    }
+                    else if(document.getElementById("supply-gpa-class").value == "") {
+                        calculationText.innerHTML = `<p>Please upload regular GPA excel</p>`;
+                    }
+                    else{
+                        calculationText.style.display = "none";
+                        
+                    }
+                }
+            }
+            else if (CgpaPopup.style.display == "block" && SgpaPopup.style.display != "block"){
+                function checkBoxVal() {
+                    var checkboxs=document.getElementsByName("cb");
+                    var l = checkboxs.length;
+                    
+                    for(var i=0; i<1; i++){
+                        if(checkboxs[i].checked){
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                if (checkBoxVal()){
+                    calculationText.style.display = "none";
+                }
+                else{
+                    calculationText.innerHTML = "Please select atleast one Semester";
+                }
+            }
+        }
+
+        var arr = new Array();
+        function toggleContent(checkboxId, checkValue) {
+            var contentId = "content" + checkValue;
+            var cgpaClass = "cgpa-class"+checkValue;
+            var uploadLabel = "upload-label"+checkValue;
+            var checkbox = document.getElementById(checkboxId);
+            var content = document.getElementById(contentId);
+            
+            if (checkbox.checked) {
+                content.style.display = "block";
+                arr.push(checkValue);
+                document.getElementById(cgpaClass).addEventListener('change', function(){
+                    document.getElementById(uploadLabel).innerHTML = this.files[0].name;
+                })
+                console.log(arr);
+                arr.sort();
+                
+                document.getElementById('get-result').onclick = () => {
+                    var index = arr[arr.length-1];
+                    if (document.getElementById("cgpa-class" + index).value == ""){
+                        calculationText.style.display = "block";
+                        calculationText.innerHTML = `<p>Please upload semester ` + index + ` excel file</p>`;
+                    }
+                    else{
+                        calculationText.style.display = "none";
+                    }
+                    arr.pop();
+                }
+            } else {
+                content.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
