@@ -498,6 +498,7 @@
 
     <!-- <script src="script.js"></script> -->
     <script>
+        const csrfToken = "{{ csrf_token }}";
         const container = document.getElementById("container");
         const calculationText = document.getElementById("calculation-text");
 
@@ -600,6 +601,49 @@
                         }
                         else{
                             calculationText.style.display = "none";
+                            const formData = new FormData();
+                            const regularClassFile = document.getElementById("regular-class").files[0];
+                            formData.append('regular_class', regularClassFile);
+                            
+                            fetch('/process_regular_sgpa/', {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-CSRFToken': csrfToken
+                                }
+                            })
+                            .then(response => {
+                                if (response.ok) {                                    
+                                const contentType = response.headers.get('Content-Type');
+                                if (contentType && contentType.includes('application/json')) {
+                                    return response.json(); // Handle JSON response
+                                } else {
+                                    return response.blob(); // Handle file download response
+                                } }})
+                            .then(data =>{    
+                                if (data instanceof Blob) {
+                                    const url = window.URL.createObjectURL(data);
+                                    const link = document.createElement('a');
+                                    link.href = url;
+                                    link.setAttribute('download', 'Result.xlsx');
+                                    document.body.appendChild(link);
+                                    link.click();
+                                    document.body.removeChild(link);
+                                    window.URL.revokeObjectURL(url);
+                                }                                                          
+                                else if (data.hasOwnProperty('message')) {
+                                    // Display the message on the web page                                   
+                                    if (calculationText) {                                        
+                                        calculationText.style.display = "block";
+                                        calculationText.innerHTML = '<p>The uploaded file is in incorrect format. So try uploading excel</p>';
+                                    }
+                                    }
+                                else{
+                                    console.log("Hello World");
+                                }
+                                
+                            })
+                            .catch(error => console.error("Error:", error));
                         }
                     }
                 }
