@@ -1,26 +1,30 @@
 import pandas as pd
-from utils.Result_Analysis_Database_Manager import *
 from utils.Statistics import *
 import utils.Total_Credits_Class
 
-def SGPA_calculation(input_data):
-    #getting grades from database that are expected be present in the excel file
-    grades=gradesDatabaseManager()
-
-    #getting branch codes from database that are expected be present in the excel file
-    branch_codes=branchCodeDatabaseManager()
+def SGPA_calculation(input_data,grades,branch_codes):
     
     #Separating supple data from regular data
     roll_list=[]
-    for i in range(len(input_data)):
-        roll_list.append(input_data['Htno'][i][0:5])
-    new_roll_list=list(set(roll_list))
+    try:
+        for i in range(len(input_data)):
+            roll_list.append(input_data['Htno'][i][0:5]) #Stores all the available hallticket number series of the provided data
+
+    # Whenever wrong type of excel data is provided then the required columns 'Htno' won't be there so solving that exception
+    except KeyError:
+        return "The uploaded result file is incorrect. Check your file and  upload again or check user guide for knowing suitable format"
+    new_roll_list=list(set(roll_list)) #stores the occurence each number series uniquely
     temp_list=[]
     for i in new_roll_list:
-        temp_list.append(roll_list.count(i))
-    roll_series=new_roll_list[temp_list.index(max(temp_list))]
+        temp_list.append(roll_list.count(i)) #stores the count of each series in the overall data
+
+    # As it is the regular file data maximum occuring series will give the regular student data
+    roll_series=new_roll_list[temp_list.index(max(temp_list))] # Saves the maxmimum occuring series
+  
+    roll_series1=str(int(roll_series[0:2])+1)+roll_series[2:4]+'5' #Getting the starting series for LE students
+
+    # creating new dataframe for saving regular data only
     updated_data=pd.DataFrame(columns=input_data.columns)
-    roll_series1=str(int(roll_series[0:2])+1)+roll_series[2:4]+'5'
     for i in range(len(input_data)):
         if input_data.iloc[i,0][0:5]== roll_series or input_data.iloc[i,0][0:5]==roll_series1:
             updated_data.loc[len(updated_data.index)]=list(input_data.iloc[i,:])
@@ -66,7 +70,9 @@ def SGPA_calculation(input_data):
                 student_data.append(student_data_dict)
                 for j in range(len(objects_list)):
                     if student_data[0][6:8] == objects_list[j].branch:
-                        objects_list[j].regularCalculation(student_data,grades)
+                        return_value=objects_list[j].regularCalculation(student_data,grades)
+                        if isinstance(return_value,str):
+                            return return_value
             student_data=[updated_data.iloc[i,0]]
             student_data_dict={}
             student_data_dict.update({updated_data.iloc[i,1]: [updated_data.iloc[i,-2], updated_data.iloc[i,-1]]})
@@ -90,4 +96,8 @@ def SGPA_calculation(input_data):
                     stats_object[i].toppersCal(objects_list[i].final_result_df)
                     stats_object[i].stats_df.to_excel(output,sheet_name=branch_codes[j][2]+" Analysis",index=False)
                     stats_object[i].topper_df.to_excel(output,sheet_name=branch_codes[j][2]+" Analysis",index=False,startrow=len(stats_object[i].stats_df)+2)
+                    break
+            else:
+                return "Details about branch code "+objects_list[i].branch+" is missing in the database. So update the database by logging in"
         stats_object[0].overall_data.to_excel(output,sheet_name="Overall Analysis",index=False)
+    return 0

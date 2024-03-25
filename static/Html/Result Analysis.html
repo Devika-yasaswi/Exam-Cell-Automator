@@ -16,7 +16,7 @@
         body{
             width: 100vw;
             height: 100vh;
-            background: url("{% static 'background.png' %}");
+            background: url("{% static 'Images/background.png' %}");
             background-position: center;
             background-size: cover;
             overflow: hidden;
@@ -351,7 +351,7 @@
 <body>
     <div class="container" id="container">
         <header class="header">
-            <img src="{% static 'JNTUK logo.png' %}" class="logo">
+            <img src="{% static 'Images/JNTUK logo.png' %}" class="logo">
             <div class="text">
                 <h1 class="main-heading">University College of Engineering Narasaraopet</h1>
                 <h2 class="sub-heading">Jawaharlal Nehru Technological University Kakinada</h2>
@@ -505,6 +505,15 @@
         const SgpaPopup = document.getElementById("sgpa-popup");
         const sgpaBtn = document.getElementById("sgpa");
 
+        function getFileName(fileName, uploadLabel){
+            const defaultLabel = "Upload File";
+            if (fileName !=""){
+                return uploadLabel.innerHTML = fileName;
+            }
+            else{
+                return uploadLabel.innerHTML = defaultLabel;
+            }
+        }
         function sgpaFunction(){
             const node = document.getElementById("calculation-part");
             node.appendChild(SgpaPopup);
@@ -534,9 +543,10 @@
 
         const regularBtn = document.getElementById('regular-class');
 
-        regularBtn.addEventListener('change', function(){
-            document.getElementById('upload-regular-label').innerHTML = this.files[0].name;
-        })
+        document.getElementById('regular-class').addEventListener('change', function(){
+            const fileName = document.getElementById('regular-class').value.replace(/^.*\\/, "");
+            getFileName(fileName, document.getElementById('upload-regular-label'));
+        });
 
         const supplyPopup = document.getElementById("supply-popup")
         const supply = document.getElementById("supply");
@@ -635,7 +645,7 @@
                                     // Display the message on the web page                                   
                                     if (calculationText) {                                        
                                         calculationText.style.display = "block";
-                                        calculationText.innerHTML = '<p>The uploaded file is in incorrect format. So try uploading excel</p>';
+                                        calculationText.innerHTML = '<p>'+data.message+'</p>';
                                     }
                                     }
                                 else{

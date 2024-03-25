@@ -77,6 +77,8 @@ class TotalCredits:
                         if grades[i][1] !=0 and grades[i][2].capitalize()=="P":
                             total_subs+=1
                         break
+                else:
+                    return "Details about grade "+data[0]+" is missing in the database. So update the database by logging in"
         temp_data.append(GBM)
         temp_data.append(self.credits)
         if "F" not in pass_status:
@@ -97,4 +99,5 @@ class TotalCredits:
                 if self.subject_codes[i] not in subs:
                     temp_data.insert(i+1,"-")
             self.final_result_df.loc[len(self.final_result_df)]=temp_data
+        return 0
         

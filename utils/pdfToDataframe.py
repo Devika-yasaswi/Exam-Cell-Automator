@@ -8,7 +8,7 @@ def pdfToDataframe(input_file):
         data=pd.concat([data,df[i]],ignore_index=True)
     try:
         if data[list(data.columns)[-1]].isnull().values.any():
-            return "Error"   
+            return "The uploaded file is in incorrect format. Check user guide for knowing correct format or try uploading excel"   
         return data                                                                  
     except: 
-        return "Error"
+        return "The uploaded result file is incorrect. Check your file and  upload again or check user guide for knowing suitable format"
