@@ -16,10 +16,12 @@
         body{
             width: 100vw;
             height: 100vh;
-            background: url("{% static 'Images/background.png' %}");
+            background: url('https://venngage-wordpress.s3.amazonaws.com/uploads/2018/09/Colorful-Circle-Simple-Background-Image-1.jpg');
             background-position: center;
+            background-repeat: no-repeat;
             background-size: cover;
             overflow: hidden;
+            color: #fff;
         }
 
         .container{
@@ -33,7 +35,7 @@
         }
 
         .logo{
-            width: 4rem;
+            width: 5rem;
             margin-right: 1rem;
         }
 
@@ -44,26 +46,30 @@
         }
 
         .main-heading{
-            font-size: 1.7rem;
+            font-size: 1.8rem;
+            letter-spacing: 0.05rem;
+            margin-bottom: .2rem;
         }
 
         .sub-heading{
+            text-align: center;
             font-size: 1.5rem;
         }
 
         .main{
-            background-color: bisque;
             border-radius: .2rem;
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 2rem;
+            transform: translate(-50%, -40%);
+            background-color: transparent;
+            padding: 1.5rem;
+            border: .1rem solid #fff;
+            box-shadow: rgba(255, 255, 255, 0.55) 0px 4px 15px, rgba(255, 255, 255, 0.62) 0px -4px 15px, rgba(255, 255, 255, 0.62) 0px 0px 0px, rgba(255, 255, 255, 0.67) 0px 0px 0px, rgba(255, 255, 255, 0.99) 0px 0px 0px;
         }
 
         .calculation-part h1{
-            font-size: 1.6rem;
-            font-weight: 500;
+            font-size: 1.7rem;
             margin-right: 1rem;
             display: inline;
         }
@@ -76,6 +82,7 @@
 
         .select p{
             margin-right: 1rem;
+            margin-top: .5rem;
             font-size: 1rem;
         }
 
@@ -88,16 +95,31 @@
             margin-top: 1.2rem;
             letter-spacing: .02rem;
             font-weight: 500;
-            color: #bb0a0a;
+            color: red;
+            clear: both;
+        }
+
+        .btns{
+            clear: right;
         }
 
         .btns button{
             width: 7rem;
             font-size: 1rem;
             padding: 0.5rem;
-            margin-top: 2rem;
-            margin-right: 1rem;
+            background-color: #fff;
+            color: #000;
+            border: transparent;
+            border-radius: .2rem;
+            outline: 0;
+            margin: 1.5rem 1rem 0.2rem 1rem;
             cursor: pointer;
+            transition: all .3s;
+        }
+
+        .btns button:hover{
+            background: red;
+            color: #fff;
         }
 
         .sgpa-popup{
@@ -142,9 +164,10 @@
 
         .upload-label{
             display: inline-block;
-            background-color: #eee;
+            background-color: #fff;
             padding: 0.1rem 0.3rem;
             border: .05rem solid #000;
+            color: #000;
             font-size: .9rem;
             cursor: pointer;
             margin-top: .3rem;
@@ -156,8 +179,36 @@
         }
 
         .analysis{
-            margin-top: 1rem;
-            margin-left: 2rem;
+            margin-top: .5rem;
+        }
+        
+        .analysis span{
+            font-size: 1.1rem;
+            margin-bottom: .3rem;
+        }
+
+        .options{
+            display: flex;
+            justify-content: left;
+            align-items: baseline;
+        }
+
+        .options p{
+            margin-right: 1rem;
+            font-size: 1rem;
+        }
+
+        .options input{
+            height: 0.75rem;
+            width: 0.75rem;
+            margin-right: .3rem;
+            margin-bottom: .5rem;
+        }
+
+        .check-analysis{
+            font-size: .9rem;
+            float: right;
+            margin-right: 2.5rem;
         }
 
         .supply-popup{
@@ -167,6 +218,15 @@
 
         .supply-clicked .supply-popup{
             display: block;
+        }
+
+        #upload-supply-label{
+            margin-left: 4.5rem;
+            margin-bottom: .5rem;
+        }
+
+        #upload-gpa-label{
+            margin-left: 1rem;
         }
 
         .cgpa-popup{
@@ -184,6 +244,13 @@
             margin: .2rem;
         }
 
+        .left, .right{
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
         .checks input{
             margin-right: .3rem;
         }
@@ -194,7 +261,7 @@
         }
 
         .cgpa-content input{
-            margin-left: .8rem;
+            margin-left: .5rem;
         }
 
         .cgpa-clicked .cgpa-popup{
@@ -203,10 +270,10 @@
 
         .content-text{
             display: inline; 
-            font-size: .8em;
+            font-size: .8rem;
         }
 
-        @media only screen and (max-width: 1128px) and (min-width: 320px){
+        @media only screen and (max-width: 949px) and (min-width: 300px){
             body{
                 width: 100vw;
                 height: 100vh;
@@ -229,7 +296,7 @@
             }
 
             .main-heading{
-                font-size: 1.1rem;
+                font-size: 1.2rem;
                 margin-bottom: .5rem;
             }
 
@@ -243,7 +310,7 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -40%);
-                padding: .5rem;
+                padding: .5rem 1rem;
                 width: 18rem;
             }
 
@@ -263,7 +330,7 @@
 
             .calculation-text{
                 letter-spacing: 0;
-                font-size: .8rem;
+                font-size: .7rem;
             }
 
             .btns button{
@@ -271,9 +338,7 @@
                 margin: 0;
                 width: 4.3rem;
                 font-size: .6rem;
-                margin-top: 1.5rem;
-                margin-left: 0rem;
-                margin-right: 1.5rem;
+                margin: 1rem 1.5rem 0.5rem 1.5rem;
             }
 
             .file-type h1{
@@ -283,7 +348,7 @@
             .sgpa-select p{
                 margin-top: .3rem;
                 margin-right: .5rem;
-                font-size: .75rem;
+                font-size: .8rem;
             }
 
             .sgpa-select input{
@@ -292,10 +357,12 @@
             }
 
             .upload-label{
-                padding: 0.1rem;
-                font-size: .6rem;
+                padding: 0.05rem 0.15rem;
+                font-size: .65rem;
                 margin-top: .2rem;
                 margin-left: 1rem;
+                border: .05rem solid #000;
+                outline: 0;
             }
 
             #file-chosen{
@@ -303,18 +370,51 @@
             }
 
             .regular-popup p{
-                font-size: .7rem;
+                font-size: .75rem;
+            }
+
+            #upload-regular-label{
+                margin-left: 2rem;
             }
 
             .analysis{
-                margin-top: .8rem;
-                margin-left: 1rem;
-                font-size: .6rem;
+                margin-top: .2rem;
+            }
+            
+            .analysis span{
+                font-size: .8rem;
+                margin-bottom: .2rem;
+            }
+
+            .options{
+                display: flex;
+                justify-content: left;
+                align-items: baseline;
+            }
+
+            .options p{
+                margin-right: .5rem;
+                font-size: .75rem;
+            }
+
+            .options input{
+                height: 0.6rem;
+                width: 0.6rem;
+                margin-right: .2rem;
+                margin-bottom: .2rem;
+            }
+
+            .check-analysis{
+                font-size: .7rem;
             }
 
             .supply-popup p{
-                font-size: .7rem;
+                font-size: .8rem;
                 margin-bottom: .3rem;
+            }
+
+            #upload-supply-label{
+                margin-left: 3.8rem;
             }
 
             .checks input{
@@ -324,7 +424,7 @@
             }
 
             .checks h3{
-                font-size: .7rem;
+                font-size: .8rem;
             }
 
             .left, .right{
@@ -335,7 +435,7 @@
 
             .left p, .right p{
                 margin: .1rem;
-                font-size: .6rem;
+                font-size: .7rem;
             }
 
             .cgpa-content input{
@@ -354,7 +454,7 @@
             <img src="{% static 'Images/JNTUK logo.png' %}" class="logo">
             <div class="text">
                 <h1 class="main-heading">University College of Engineering Narasaraopet</h1>
-                <h2 class="sub-heading">Jawaharlal Nehru Technological University Kakinada</h2>
+                <h3 class="sub-heading">Jawaharlal Nehru Technological University Kakinada</h3>
             </div>
         </header>
         <div class="main" id="main">
@@ -387,26 +487,30 @@
 
     <div class="regular-popup" id="regular-popup">
         <div>
-            <p>Upload the result pdf
+            <p><span id="regular-file">Upload the result pdf</span>
                 <input type="file" accept=".pdf" id="regular-class" hidden>
-                <label for="regular-class" class="upload-label" id="upload-regular-label">Upload file</label>
+                <label for="regular-class" class="upload-label" id="upload-regular-label">Upload File</label>
                 <span id="regular-file-chosen" class="file-chosen"></span>
             </p>
         </div>
-        <div>
-            <p>Analysis Type: 
-                <select name="analysis-type" id="analysis-type" class="analysis">
-                    <option value="none" selected disabled hidden><p style="font-size: smaller;">Select</p></option>
-                    <option value="Overall Analysis"><p style="font-size: smaller;">Overall Analysis</p></option>
-                    <option value="CSE"><p style="font-size: smaller;">CSE Analysis</p></option>
-                    <option value="ECE"><p style="font-size: smaller;">ECE Analysis</p></option>
-                    <option value="EEE"><p style="font-size: smaller;">EEE Analysis</p></option>
-                    <option value="MECH"><p style="font-size: smaller;">MECH Analysis</p></option>
-                    <option value="CIVIL"><p style="font-size: smaller;">CIVIL Analysis</p></option>
-                </select>
-            </p>
+        <div class="analysis">
+            <span>Analysis Type:</span>
+            <div class="options">
+                <label for="analysis-option"></label>
+                <p><input type="radio" name="analysis-option" id="overall" value="overall-analysis">Overall Analysis</p>
+                <p><input type="radio" name="analysis-option" id="branch-wise" value="branch-wise-analysis">BranchWise Analysis</p>
+            </div>
         </div>
     </div>
+
+    <div class="analysis-popup" id="analysis-popup" style="display: none;">
+        <select name="analysis-type" class="check-analysis" id="analysis-type">
+            <option value="none" selected disabled hidden><p>Select</p></option>
+            <option value="CSE"><p>CSE Analysis</p></option>
+        </select>
+    </div>
+
+    <div class="overall-popup" id="overall-popup" style="display: none;"></div>
 
     <div class="supply-popup" id="supply-popup">
         <div>
@@ -430,16 +534,16 @@
             <div class="checks">
                 <h3>Choose Semeters for CGPA: </h3>
                 <div class="left" id="sem-file">
-                    <p><input type="checkbox" name="cb" id="check1" value="1" onchange="toggleContent('check1', value)">Sem 1</p>
-                    <p><input type="checkbox" name="cb" id="check3" value="3" onchange="toggleContent('check3', value)">Sem 3</p>
-                    <p><input type="checkbox" name="cb" id="check5" value="5" onchange="toggleContent('check5', value)">Sem 5</p>
-                    <p><input type="checkbox" name="cb" id="check7" value="7" onchange="toggleContent('check7', value)">Sem 7</p>
+                    <p><input type="checkbox" name="cb" class="check" id="check1" value="1" onchange="toggleContent('check1', value)">Sem 1</p>
+                    <p><input type="checkbox" name="cb" class="check" id="check3" value="3" onchange="toggleContent('check3', value)">Sem 3</p>
+                    <p><input type="checkbox" name="cb" class="check" id="check5" value="5" onchange="toggleContent('check5', value)">Sem 5</p>
+                    <p><input type="checkbox" name="cb" class="check" id="check7" value="7" onchange="toggleContent('check7', value)">Sem 7</p>
                 </div>
                 <div class="right" id="sem-file">
-                    <p><input type="checkbox" name="cb" id="check2" value="2" onchange="toggleContent('check2', value)">Sem 2</p>
-                    <p><input type="checkbox" name="cb" id="check4" value="4" onchange="toggleContent('check4', value)">Sem 4</p>
-                    <p><input type="checkbox" name="cb" id="check6" value="6" onchange="toggleContent('check6', value)">Sem 6</p>
-                    <p><input type="checkbox" name="cb" id="check8" value="8" onchange="toggleContent('check8', value)">Sem 8</p>
+                    <p><input type="checkbox" name="cb" class="check" id="check2" value="2" onchange="toggleContent('check2', value)">Sem 2</p>
+                    <p><input type="checkbox" name="cb" class="check" id="check4" value="4" onchange="toggleContent('check4', value)">Sem 4</p>
+                    <p><input type="checkbox" name="cb" class="check" id="check6" value="6" onchange="toggleContent('check6', value)">Sem 6</p>
+                    <p><input type="checkbox" name="cb" class="check" id="check8" value="8" onchange="toggleContent('check8', value)">Sem 8</p>
                 </div>
             </div>
 
@@ -502,9 +606,6 @@
         const container = document.getElementById("container");
         const calculationText = document.getElementById("calculation-text");
 
-        const SgpaPopup = document.getElementById("sgpa-popup");
-        const sgpaBtn = document.getElementById("sgpa");
-
         function getFileName(fileName, uploadLabel){
             const defaultLabel = "Upload File";
             if (fileName !=""){
@@ -514,6 +615,10 @@
                 return uploadLabel.innerHTML = defaultLabel;
             }
         }
+
+        const SgpaPopup = document.getElementById("sgpa-popup");
+        const sgpaBtn = document.getElementById("sgpa");
+
         function sgpaFunction(){
             const node = document.getElementById("calculation-part");
             node.appendChild(SgpaPopup);
@@ -522,6 +627,7 @@
                 calculationText.style.display = "none";
                 SgpaPopup.style.display = "block";
                 sgpaBtn.disabled = true;
+                cgpaBtn.disabled = false;   
             })
         }
 
@@ -543,10 +649,40 @@
 
         const regularBtn = document.getElementById('regular-class');
 
-        document.getElementById('regular-class').addEventListener('change', function(){
+        regularBtn.addEventListener('change', function(){
             const fileName = document.getElementById('regular-class').value.replace(/^.*\\/, "");
             getFileName(fileName, document.getElementById('upload-regular-label'));
-        });
+        })
+
+        const analysisPopup = document.getElementById("analysis-popup");
+        const overallPopup = document.getElementById("overall-popup");
+    
+        const branchWiseBtn = document.getElementById("branch-wise");
+        
+        function displayBranch(){
+            const newNode = document.getElementById("calculation-part");
+            newNode.appendChild(analysisPopup);
+            newNode.addEventListener('click', ()=> {
+                calculationText.style.display = "none";
+                overallPopup.style.display = "none";
+                analysisPopup.style.display = "block";
+            })
+        }
+        
+        branchWiseBtn.addEventListener('click', displayBranch);
+        
+        const overallBtn = document.getElementById("overall");
+        
+        function displayOverall(){
+            const newNode = document.getElementById("calculation-part");
+            newNode.addEventListener('click', ()=> {
+                calculationText.style.display = "none";
+                analysisPopup.style.display = "none";
+                overallPopup.style.display = "block";
+            })
+        }
+
+        overallBtn.addEventListener('click', displayOverall);
 
         const supplyPopup = document.getElementById("supply-popup")
         const supply = document.getElementById("supply");
@@ -565,13 +701,14 @@
         const supplyBtn = document.getElementById('supply-class');
 
         supplyBtn.addEventListener('change', function(){
-            document.getElementById('upload-supply-label').innerHTML = this.files[0].name;
-        })
+            const fileName = document.getElementById('supply-class').value.replace(/^.*\\/, "");
+            getFileName(fileName, document.getElementById('upload-supply-label'));        })
 
         const supplyGpaBtn = document.getElementById('supply-gpa-class');
 
         supplyGpaBtn.addEventListener('change', function(){
-            document.getElementById('upload-gpa-label').innerHTML = this.files[0].name;
+            const fileName = document.getElementById('supply-gpa-class').value.replace(/^.*\\/, "");
+            getFileName(fileName, document.getElementById('upload-gpa-label'));
         })
 
         const CgpaPopup = document.getElementById("cgpa-popup");
@@ -586,6 +723,7 @@
                 regularPopup.style.display = "none";
                 supplyPopup.style.display = "none";
                 sgpaBtn.disabled = false;
+                cgpaBtn.disabled = true;
                 CgpaPopup.style.display = "block";
             })
         }
@@ -606,7 +744,7 @@
                         calculationText.innerHTML = `<p>Please upload result pdf file</p>`;
                     }
                     else {
-                        if(document.getElementById("analysis-type").value == "none") {
+                        if(overallPopup.style.display != "block" && analysisPopup.style.display != "block") {
                             calculationText.innerHTML = `<p>Please select analysis type</p>`;
                         }
                         else{
@@ -646,12 +784,12 @@
                                     if (calculationText) {                                        
                                         calculationText.style.display = "block";
                                         calculationText.innerHTML = '<p>'+data.message+'</p>';
+
+                                        document.getElementById("regular-file").innerHTML = "Upload the result excel";
+                                        document.getElementById("regular-class").accept = ".xlsx"; 
                                     }
-                                    }
-                                else{
-                                    console.log("Hello World");
                                 }
-                                
+                                                                
                             })
                             .catch(error => console.error("Error:", error));
                         }
@@ -666,62 +804,88 @@
                     }
                     else{
                         calculationText.style.display = "none";
-                        
                     }
                 }
             }
             else if (CgpaPopup.style.display == "block" && SgpaPopup.style.display != "block"){
-                function checkBoxVal() {
-                    var checkboxs=document.getElementsByName("cb");
-                    var l = checkboxs.length;
-                    
-                    for(var i=0; i<1; i++){
-                        if(checkboxs[i].checked){
-                            return true;
-                        }
+                const checkboxes = document.querySelectorAll('.check');
+                let checkedCount = 0;
+                
+                checkboxes.forEach(function(checkbox) {
+                    if (checkbox.checked) {
+                        checkedCount++;
                     }
-                    return false;
-                }
+                });
 
-                if (checkBoxVal()){
+                if (checkedCount == 0) {
+                    calculationText.innerHTML = "Please select Semesters";
+                } 
+                else if (checkedCount < 2) {
+                    calculationText.innerHTML = "Please select atleast two semesters";
+                } 
+                else {
                     calculationText.style.display = "none";
-                }
-                else{
-                    calculationText.innerHTML = "Please select atleast one Semester";
                 }
             }
         }
 
-        var arr = new Array();
+        const arr = new Array();
         function toggleContent(checkboxId, checkValue) {
             var contentId = "content" + checkValue;
             var cgpaClass = "cgpa-class"+checkValue;
             var uploadLabel = "upload-label"+checkValue;
             var checkbox = document.getElementById(checkboxId);
             var content = document.getElementById(contentId);
+
+            function resultOnClick(arr){
+                var newArr = [...arr];
+                document.getElementById(cgpaClass).addEventListener('change', function(){
+                    const fileName = document.getElementById(cgpaClass).value.replace(/^.*\\/, "");
+                    getFileName(fileName, document.getElementById(uploadLabel));
+                })
+
+                newArr.sort();
+                
+                document.getElementById('get-result').onclick = () => {                               
+                    if (newArr.length >= 2){
+                        while (newArr.length>0){
+                            if (document.getElementById("cgpa-class" + newArr[0]).value == ""){
+                                calculationText.style.display = "block";
+                                calculationText.innerHTML = `<p>Please upload semester ` + newArr[0] + ` excel file</p>`;
+                                break;
+                            }
+                            else{
+                                if (newArr.length==0){
+                                    calculationText.style.display = "none";
+                                }
+                                else{
+                                    newArr.shift();
+                                }
+                            }
+                        }
+                    }
+                    else if (newArr.length == 0) {
+                        calculationText.style.display = "block";
+                        calculationText.innerHTML = "Please select Semesters";
+                    } 
+                    else if (newArr.length < 2){
+                        calculationText.style.display = "block";
+                        calculationText.innerHTML = "Please select atleast two semesters";
+                    } 
+                }
+            }
             
-            if (checkbox.checked) {
+            if (checkbox.checked == true) {
                 content.style.display = "block";
                 arr.push(checkValue);
-                document.getElementById(cgpaClass).addEventListener('change', function(){
-                    document.getElementById(uploadLabel).innerHTML = this.files[0].name;
-                })
-                console.log(arr);
-                arr.sort();
                 
-                document.getElementById('get-result').onclick = () => {
-                    var index = arr[arr.length-1];
-                    if (document.getElementById("cgpa-class" + index).value == ""){
-                        calculationText.style.display = "block";
-                        calculationText.innerHTML = `<p>Please upload semester ` + index + ` excel file</p>`;
-                    }
-                    else{
-                        calculationText.style.display = "none";
-                    }
-                    arr.pop();
-                }
-            } else {
+                resultOnClick(arr);
+            }
+            else{
                 content.style.display = "none";
+                arr.splice(arr.indexOf(checkValue), 1);
+
+                resultOnClick(arr);
             }
         }
     </script>
