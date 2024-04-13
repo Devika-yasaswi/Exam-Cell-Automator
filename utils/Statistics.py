@@ -1,7 +1,7 @@
 import pandas as pd
-class FindStats:
-    overall_data=pd.DataFrame(columns=["Branch","Registered","Appeared","Absent","Failed","Passed","Percentage"])
+class FindStats:    
     def __init__(self, branch_code) -> None:
+        self.overall_data=pd.DataFrame(columns=["Branch","Registered","Appeared","Absent","Failed","Passed","Percentage"])
         self.branch_code=branch_code
         self.stats_df=pd.DataFrame(columns=["subject","Registered","Appeared","Absent","Failed","Passed","Pass Percentage"])
         self.topper_df=pd.DataFrame(columns=["Place","Roll No","Points","SGPA"])

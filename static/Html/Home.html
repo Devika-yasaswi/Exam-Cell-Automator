@@ -4,15 +4,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Page</title>
-    <link rel="stylesheet" href="{% static 'CSS/Style.css' %}">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
+    <title>Exam Cell Automator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'Images/Home Background.jpg' %}");
+            background-position: center;
+            background-size: cover;
+        }
+
+        .header {
+            width: 100%;
+            position: relative;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 1% 3%;
+        }
+
+        .header-wrap{
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            flex: 80%;
+        }
+
+        nav img {
+            display: block;
+            margin: 0 auto; 
+            max-height: 75px;
+        }
+
+        .text {
+            padding-left: 1rem;
+            text-align: center;
+        }
+
+        .main-heading, .sub-heading {
+            color: #fff;
+            font-size: 24px;
+            margin: 5px 0; 
+        }
+
+        .nav-links {
+            flex: 50%;
+            text-align: right;
+        }
+
+        .nav-links ul li{
+            list-style: none;
+            padding: 8px 12px;
+            display: inline-block;
+            position: relative;
+        }
+
+
+        .nav-links ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links ul li a:hover {
+            color: #FFDD95;
+        }
+
+        .text-box {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .text-box h1 {
+            font-size: 36px;
+            margin: 30px 0 10px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            margin-top: 5%;
+        }
+
+        .col {
+            flex-basis: calc(33.33% - 20px);
+            margin: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: 0.5s;
+            background-color: rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .col img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .col:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            border: 1px solid #fff;
+            padding: 12px 34px;
+            font-size: 13px;
+            background: transparent;
+            border-radius: 25px;
+            transition: border-color 0.5s, background-color 0.5s;
+        }
+
+        .btn:hover {
+            border-color: #FFDD95;
+            background: #FFDD95;
+        }
+    
+
+        @media(max-width: 768px) {
+            nav {
+                flex-wrap: wrap;
+            }
+
+            .header {
+                width: 100%;
+                position: relative;
+                padding-top: 2%;
+            }
+
+            .header-wrap{
+                flex-direction: column;
+            }
+
+            nav img {
+                display: block;
+                margin: 0 auto; 
+                max-height: 50px;
+            }
+
+            .main-heading, .sub-heading {
+                color: #fff;
+                font-size: 16px;
+                margin: 5px 0; 
+            }
+
+            .nav-links {
+                position:absolute;
+                background: #f44336;
+                height:100vh;
+                width: 200px;
+                top:0;
+                right: -200px;
+                text-align: left;
+                z-index: 2;
+                transition: 1s;
+            }
+
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position:absolute;
+                top:100%;
+                left:0;
+                right:0;
+                background:#fff;
+                text-align: center;
+                padding-top: 20px;
+            }
+
+            .nav-links ul {
+                flex-direction: column;
+            }
+
+            .nav-links ul li {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .fa-bars {
+                display: block;
+                position: absolute;
+                color: #fff;
+                top: 10px;
+                right: 10px;
+            }
+
+            .text-box {
+                position: static;
+                transform: none;
+            }
+
+            .row {
+                margin-top: 20px;
+            }
+
+            .col {
+                flex-basis: calc(50% - 20px);
+            }
+        }
+        @media(min-width:768px){
+            .col{
+                flex-basis: calc(33.33% -20px);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <section class="header">
         <nav>
-            <a href="home.html"><img src="{% static 'Images/JNTUK logo.png' %}"></a>
-            <h1>Jawaharlal Nehru Technological University Kakinada</h1>
+            <div class="header-wrap">
+                <a href="home.html"><img src="{% static 'Images/JNTUK logo.png' %}"></a>
+                <div class="text">
+                    <h1 class="main-heading">University College of Engineering Narasaraopet</h1>
+                    <h3 class="sub-heading">Jawaharlal Nehru Technological University Kakinada</h3>
+                </div>
+            </div>
             <div class="nav-links" id="navLinks">
                 <i class="fa fa-times" onclick="hideMenu()"></i>
                 <ul>
@@ -24,18 +255,29 @@
             </div>
             <i class="fa fa-bars" onclick="showMenu()"></i>
         </nav>
-<div class="text-box">
-    <h1>Exam Cell Automator</h1>
-    <a href="../Html/Result Analysis.html" class="btn">Result Analysis</a>
-    <a href="" class="btn">Seating Arrangement</a>
-</div>
-</section>
-<section class="footer">
-    <h4>About</h4>
-    <p>This website is useful for all JNTUK affiliated colleges.<br>It is developed by UCEN students.</p>
-</section>
+    </section>
+    <section class="text-box">
+        <h1>Exam Cell Automator</h1>
+        <div class="row">
+            <div class="col">
+                <h2>Result Analysis</h2>
+                <img src="{% static 'Images\Exam Result Analysis.png' %}" alt="Result Analysis Image">
+                <a href="../Html/Result Analysis.html" class="btn">Click here</a>
+            </div>
+            <div class="col">
+                <h2>Seating Allocation</h2>
+                <img src="{% static 'Images\Seating Allocation Image.jpg' %}" alt="Seating Allocation Image">
+                <a href="../Html/Seating Allocation.html" class="btn">Click here</a>
+            </div>
+            <div class="col">
+                <h2>Attendance Sheet</h2>
+                <img src="{% static 'Images\Attendance Sheet Image.jpg' %}" alt="Attendance Sheet Image">
+                <a href="#" class="btn">Click here</a>
+            </div>
+        </div>
+    </section>
     <script>
-        var navLinks=document.getElementById("navLinks");
+       var navLinks=document.getElementById("navLinks");
         function showMenu(){
             navLinks.style.right="0";
         }
@@ -43,5 +285,7 @@
             navLinks.style.right="-200px";
         }
     </script>
+    
+
 </body>
-</html> 
+</html>

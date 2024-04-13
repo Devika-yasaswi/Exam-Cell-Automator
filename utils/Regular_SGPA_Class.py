@@ -1,5 +1,5 @@
 import pandas as pd
-class TotalCredits:
+class RegularSGPA:
     def __init__(self,branch):
         self.branch=branch
         self.subjects_list=[]

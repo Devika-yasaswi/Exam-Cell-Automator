@@ -1,6 +1,5 @@
 import tabula
 import pandas as pd
-import pandas as pd
 def pdfToDataframe(input_file):
     df=tabula.read_pdf(input_file,pages="all")
     data=pd.DataFrame()

@@ -207,8 +207,12 @@
 
         .check-analysis{
             font-size: .9rem;
-            float: right;
-            margin-right: 2.5rem;
+        }
+
+        .branch{
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
         }
 
         .supply-popup{
@@ -272,6 +276,39 @@
             display: inline; 
             font-size: .8rem;
         }
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+            display: none; /* Initially hidden */
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Align items vertically */
+          }
+          
+          #loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+          }
+          
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          
+          #loading-text {
+            margin-top: 10px; /* Add some space between spinner and text */
+            font-size: 16px;
+            color: #333;
+          }
+                  
 
         @media only screen and (max-width: 949px) and (min-width: 300px){
             body{
@@ -311,7 +348,7 @@
                 left: 50%;
                 transform: translate(-50%, -40%);
                 padding: .5rem 1rem;
-                width: 18rem;
+                width: 17rem;
             }
 
             .calculation-part h1{
@@ -338,7 +375,7 @@
                 margin: 0;
                 width: 4.3rem;
                 font-size: .6rem;
-                margin: 1rem 1.5rem 0.5rem 1.5rem;
+                margin: 1rem 1rem 0.5rem 1.5rem;
             }
 
             .file-type h1{
@@ -347,20 +384,20 @@
 
             .sgpa-select p{
                 margin-top: .3rem;
-                margin-right: .5rem;
-                font-size: .8rem;
+                margin-right: .3rem;
+                font-size: .7rem;
             }
 
             .sgpa-select input{
-                height: 0.6rem;
-                width: 0.6rem;
+                height: 0.55rem;
+                width: 0.55rem;
             }
 
             .upload-label{
                 padding: 0.05rem 0.15rem;
                 font-size: .65rem;
                 margin-top: .2rem;
-                margin-left: 1rem;
+                margin-left: .5rem;
                 border: .05rem solid #000;
                 outline: 0;
             }
@@ -370,7 +407,7 @@
             }
 
             .regular-popup p{
-                font-size: .75rem;
+                font-size: .7rem;
             }
 
             #upload-regular-label{
@@ -382,76 +419,82 @@
             }
             
             .analysis span{
-                font-size: .8rem;
+                font-size: .7rem;
                 margin-bottom: .2rem;
             }
 
             .options{
-                display: flex;
-                justify-content: left;
-                align-items: baseline;
+                flex-direction: column;
             }
 
             .options p{
-                margin-right: .5rem;
-                font-size: .75rem;
+                margin-right: .3rem;
+                font-size: .65rem;
             }
 
             .options input{
-                height: 0.6rem;
-                width: 0.6rem;
-                margin-right: .2rem;
+                height: 0.55rem;
+                width: 0.55rem;
                 margin-bottom: .2rem;
             }
 
             .check-analysis{
-                font-size: .7rem;
+                font-size: .5rem;
+            }
+
+            .branch{
+                flex-direction: row;
+                justify-content: space-between;
             }
 
             .supply-popup p{
-                font-size: .8rem;
+                font-size: .7rem;
                 margin-bottom: .3rem;
             }
 
             #upload-supply-label{
-                margin-left: 3.8rem;
+                margin-left: 3rem;
             }
 
             .checks input{
-                height: .6rem;
-                width: .6rem;
-                margin-right: .1rem;
+                height: .5rem;
+                width: .5rem;
             }
 
             .checks h3{
-                font-size: .8rem;
+                font-size: .65rem;
             }
 
             .left, .right{
                 display: flex;
                 flex-direction: column;
+                justify-content: space-around;
                 flex-wrap: wrap;
             }
 
             .left p, .right p{
                 margin: .1rem;
-                font-size: .7rem;
+                font-size: .6rem;
             }
 
             .cgpa-content input{
-                margin-left: .2rem;
+                margin-left: .1rem;
             }
 
             .content-text{
-                font-size: .6em;
+                font-size: .6rem;
             }
         }
     </style>
 </head>
 <body>
+    <div id="overlay">
+        <div id="loading-spinner"></div>
+        <p id="loading-text">Processing...</p>
+      </div>      
     <div class="container" id="container">
         <header class="header">
-            <img src="{% static 'Images/JNTUK logo.png' %}" class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/en/0/04/Jntuk-logo.png" class="logo">
             <div class="text">
                 <h1 class="main-heading">University College of Engineering Narasaraopet</h1>
                 <h3 class="sub-heading">Jawaharlal Nehru Technological University Kakinada</h3>
@@ -498,16 +541,17 @@
             <div class="options">
                 <label for="analysis-option"></label>
                 <p><input type="radio" name="analysis-option" id="overall" value="overall-analysis">Overall Analysis</p>
-                <p><input type="radio" name="analysis-option" id="branch-wise" value="branch-wise-analysis">BranchWise Analysis</p>
+                <div class="branch">
+                    <p><input type="radio" name="analysis-option" id="branch-wise" value="branch-wise-analysis">BranchWise Analysis</p>
+                    <select id="analysis-popup" class="check-analysis" style="display: none;">
+                        <option value="none" selected disabled hidden><p>Select</p></option>
+                        {% for item in branch_abbrevation %}
+                            <option value={{item}}><p>{{item}} Analysis</p></option>
+                        {% endfor %}    
+                    </select>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="analysis-popup" id="analysis-popup" style="display: none;">
-        <select name="analysis-type" class="check-analysis" id="analysis-type">
-            <option value="none" selected disabled hidden><p>Select</p></option>
-            <option value="CSE"><p>CSE Analysis</p></option>
-        </select>
     </div>
 
     <div class="overall-popup" id="overall-popup" style="display: none;"></div>
@@ -659,30 +703,25 @@
     
         const branchWiseBtn = document.getElementById("branch-wise");
         
-        function displayBranch(){
-            const newNode = document.getElementById("calculation-part");
-            newNode.appendChild(analysisPopup);
-            newNode.addEventListener('click', ()=> {
-                calculationText.style.display = "none";
-                overallPopup.style.display = "none";
-                analysisPopup.style.display = "block";
-            })
-        }
-        
-        branchWiseBtn.addEventListener('click', displayBranch);
+        branchWiseBtn.addEventListener('click', ()=> {
+            calculationText.style.display = "none";
+            overallPopup.style.display = "none";
+            analysisPopup.style.display = "block";
+        });
         
         const overallBtn = document.getElementById("overall");
-        
-        function displayOverall(){
-            const newNode = document.getElementById("calculation-part");
-            newNode.addEventListener('click', ()=> {
-                calculationText.style.display = "none";
-                analysisPopup.style.display = "none";
-                overallPopup.style.display = "block";
-            })
-        }
 
-        overallBtn.addEventListener('click', displayOverall);
+        overallBtn.addEventListener('click', ()=> {
+            calculationText.style.display = "none";
+            analysisPopup.style.display = "none";
+            overallPopup.style.display = "block";
+        });
+
+        var dropdown = document.getElementById("analysis-popup");
+        var selectedValue;
+        dropdown.addEventListener("change", function() {
+            selectedValue = dropdown.value;
+        });
 
         const supplyPopup = document.getElementById("supply-popup")
         const supply = document.getElementById("supply");
@@ -730,25 +769,27 @@
 
         cgpaBtn.addEventListener('click', cgpaFunction);
 
-        function getResult() {
-            calculationText.style.display = "block";
-            if (CgpaPopup.style.display != "block" && SgpaPopup.style.display != "block"){
-                calculationText.innerHTML = `<p>Please select Calculation Mode</p>`;
+        function sgpaContainer(){
+            if (regularPopup.style.display != "block" && supplyPopup.style.display != "block"){
+                calculationText.innerHTML = `<p>Please select File type</p>`;
             }
-            else if (CgpaPopup.style.display != "block" && SgpaPopup.style.display == "block"){   
-                if (regularPopup.style.display != "block" && supplyPopup.style.display != "block"){
-                    calculationText.innerHTML = `<p>Please select File type</p>`;
+            else if(regularPopup.style.display == "block" && supplyPopup.style.display != "block") {
+                calculationText.innerHTML = "";                            
+                if(document.getElementById("regular-class").value == "") {
+                    calculationText.innerHTML = `<p>Please upload result pdf file</p>`;
                 }
-                else if(regularPopup.style.display == "block" && supplyPopup.style.display != "block") {
-                    if(document.getElementById("regular-class").value == "") {
-                        calculationText.innerHTML = `<p>Please upload result pdf file</p>`;
+                else {
+                    if(overallPopup.style.display != "block" && analysisPopup.style.display != "block") {
+                        calculationText.innerHTML = `<p>Please select analysis type</p>`;
                     }
-                    else {
-                        if(overallPopup.style.display != "block" && analysisPopup.style.display != "block") {
-                            calculationText.innerHTML = `<p>Please select analysis type</p>`;
-                        }
-                        else{
-                            calculationText.style.display = "none";
+                    else
+                    {
+                        calculationText.style.display = "none";
+                        const overlay = document.getElementById("overlay");
+                        overlay.style.display = "flex";
+                        if (overallPopup.style.display == "block")
+                        {
+                            
                             const formData = new FormData();
                             const regularClassFile = document.getElementById("regular-class").files[0];
                             formData.append('regular_class', regularClassFile);
@@ -760,16 +801,21 @@
                                     'X-CSRFToken': csrfToken
                                 }
                             })
-                            .then(response => {
+                            .then(response => 
+                            {
+                                overlay.style.display = "none";
                                 if (response.ok) {                                    
                                 const contentType = response.headers.get('Content-Type');
                                 if (contentType && contentType.includes('application/json')) {
                                     return response.json(); // Handle JSON response
                                 } else {
                                     return response.blob(); // Handle file download response
-                                } }})
-                            .then(data =>{    
-                                if (data instanceof Blob) {
+                                } }
+                            })
+                            .then(data =>
+                            {    
+                                if (data instanceof Blob) 
+                                {
                                     const url = window.URL.createObjectURL(data);
                                     const link = document.createElement('a');
                                     link.href = url;
@@ -779,33 +825,142 @@
                                     document.body.removeChild(link);
                                     window.URL.revokeObjectURL(url);
                                 }                                                          
-                                else if (data.hasOwnProperty('message')) {
+                                else if (data.hasOwnProperty('message')) 
+                                {
                                     // Display the message on the web page                                   
-                                    if (calculationText) {                                        
+                                    if (calculationText) 
+                                    {                                        
                                         calculationText.style.display = "block";
                                         calculationText.innerHTML = '<p>'+data.message+'</p>';
 
                                         document.getElementById("regular-file").innerHTML = "Upload the result excel";
                                         document.getElementById("regular-class").accept = ".xlsx"; 
                                     }
-                                }
-                                                                
+                                }                            
                             })
-                            .catch(error => console.error("Error:", error));
+                        }
+                        else if(analysisPopup.style.display == "block")
+                        {
+                            const formData = new FormData();
+                            const regularClassFile = document.getElementById("regular-class").files[0];
+                            formData.append('regular_class', regularClassFile);
+                            formData.append("selected_branch",selectedValue);
+                            fetch('/process_regular_sgpa/', {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-CSRFToken': csrfToken
+                                }
+                            })
+                            .then(response => 
+                            {
+                                overlay.style.display = "none";
+                                if (response.ok) {                                    
+                                const contentType = response.headers.get('Content-Type');
+                                if (contentType && contentType.includes('application/json')) {
+                                    return response.json(); // Handle JSON response
+                                } else {
+                                    return response.blob(); // Handle file download response
+                                } }
+                            })
+                            .then(data =>
+                            {    
+                                if (data instanceof Blob) 
+                                {
+                                    const url = window.URL.createObjectURL(data);
+                                    const link = document.createElement('a');
+                                    link.href = url;
+                                    link.setAttribute('download', 'Result.xlsx');
+                                    document.body.appendChild(link);
+                                    link.click();
+                                    document.body.removeChild(link);
+                                    window.URL.revokeObjectURL(url);
+                                }                                                          
+                                else if (data.hasOwnProperty('message')) 
+                                {
+                                    // Display the message on the web page                                   
+                                    if (calculationText) 
+                                    {                                        
+                                        calculationText.style.display = "block";
+                                        calculationText.innerHTML = '<p>'+data.message+'</p>';
+
+                                        document.getElementById("regular-file").innerHTML = "Upload the result excel";
+                                        document.getElementById("regular-class").accept = ".xlsx"; 
+                                    }
+                                }                            
+                            })
                         }
                     }
                 }
-                else{
-                    if(document.getElementById("supply-class").value == "") {
-                        calculationText.innerHTML = `<p>Please upload result pdf file</p>`;
-                    }
-                    else if(document.getElementById("supply-gpa-class").value == "") {
-                        calculationText.innerHTML = `<p>Please upload regular GPA excel</p>`;
-                    }
-                    else{
-                        calculationText.style.display = "none";
-                    }
+            }
+            else{
+                if(document.getElementById("supply-class").value == "") {
+                    calculationText.innerHTML = `<p>Please upload result pdf file</p>`;
                 }
+                else if(document.getElementById("supply-gpa-class").value == "") {
+                    calculationText.innerHTML = `<p>Please upload regular GPA excel</p>`;
+                }
+                else{
+                    calculationText.style.display = "none";
+                    const formData = new FormData();
+                    const supplyClassFile = document.getElementById("supply-class").files[0];
+                    formData.append('supply_class', supplyClassFile);
+                    const supplyGPAClassFile = document.getElementById("supply-gpa-class").files[0];
+                    formData.append("supply_gpa_class", supplyGPAClassFile)
+                    
+                    fetch('/process_reval_sgpa/', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': csrfToken
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {                                    
+                        const contentType = response.headers.get('Content-Type');
+                        if (contentType && contentType.includes('application/json')) {
+                            return response.json(); // Handle JSON response
+                        } else {
+                            return response.blob(); // Handle file download response
+                        } }})
+                    .then(data =>{                            
+                        if (data instanceof Blob) {
+                            const url = window.URL.createObjectURL(data);
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.setAttribute('download', 'Result.xlsx');
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            window.URL.revokeObjectURL(url);
+                        }                                                          
+                        else if (data.hasOwnProperty('message')) {
+                            // Display the message on the web page                                   
+                            if (calculationText) {                                        
+                                calculationText.style.display = "block";
+                                calculationText.innerHTML = '<p>'+data.message+'</p>';
+
+                                document.getElementById("regular-file").innerHTML = "Upload the result excel";
+                                document.getElementById("regular-class").accept = ".xlsx"; 
+                            }
+                        }
+                        else{
+                            console.log("Hello World");
+                        }
+                        
+                    })
+                    .catch(error => console.error("Error:", error));
+                }
+            }
+        }
+
+        function getResult() {
+            calculationText.style.display = "block";
+            if (CgpaPopup.style.display != "block" && SgpaPopup.style.display != "block"){
+                calculationText.innerHTML = `<p>Please select Calculation Mode</p>`;
+            }
+            else if (CgpaPopup.style.display != "block" && SgpaPopup.style.display == "block"){   
+                sgpaContainer();
             }
             else if (CgpaPopup.style.display == "block" && SgpaPopup.style.display != "block"){
                 const checkboxes = document.querySelectorAll('.check');
@@ -846,32 +1001,39 @@
 
                 newArr.sort();
                 
-                document.getElementById('get-result').onclick = () => {                               
-                    if (newArr.length >= 2){
-                        while (newArr.length>0){
-                            if (document.getElementById("cgpa-class" + newArr[0]).value == ""){
-                                calculationText.style.display = "block";
-                                calculationText.innerHTML = `<p>Please upload semester ` + newArr[0] + ` excel file</p>`;
-                                break;
-                            }
-                            else{
-                                if (newArr.length==0){
-                                    calculationText.style.display = "none";
+                document.getElementById('get-result').onclick = () => {
+                    if (CgpaPopup.style.display == "block" && SgpaPopup.style.display != "block"){
+                        if (newArr.length >= 2){
+                            while (newArr.length>0){
+                                if (document.getElementById("cgpa-class" + newArr[0]).value == ""){
+                                    calculationText.style.display = "block";
+                                    calculationText.innerHTML = "Please upload semester "+newArr[0]+" excel file";
+                                    break;
                                 }
                                 else{
-                                    newArr.shift();
+                                    if (newArr.length==0){
+                                        calculationText.style.display = "none";
+
+                                    }
+                                    else{
+                                        newArr.shift();
+                                    }
                                 }
                             }
                         }
+                        else if (newArr.length == 0) {
+                            calculationText.style.display = "block";
+                            calculationText.innerHTML = "Please select Semesters";
+                        } 
+                        else if (newArr.length < 2){
+                            calculationText.style.display = "block";
+                            calculationText.innerHTML = "Please select atleast two semesters";
+                        }
                     }
-                    else if (newArr.length == 0) {
+                    else if(CgpaPopup.style.display != "block" && SgpaPopup.style.display == "block") {
                         calculationText.style.display = "block";
-                        calculationText.innerHTML = "Please select Semesters";
-                    } 
-                    else if (newArr.length < 2){
-                        calculationText.style.display = "block";
-                        calculationText.innerHTML = "Please select atleast two semesters";
-                    } 
+                        sgpaContainer();
+                    }
                 }
             }
             

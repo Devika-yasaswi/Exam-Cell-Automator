@@ -1,6 +1,6 @@
 import pandas as pd
 from utils.Statistics import *
-import utils.Total_Credits_Class
+import utils.Regular_SGPA_Class
 
 def SGPA_calculation(input_data,grades,branch_codes):
     
@@ -38,14 +38,14 @@ def SGPA_calculation(input_data,grades,branch_codes):
         if updated_data.iloc[i,0] not in student_data:
             if i!=0:
                 if len(objects_list)==0:
-                    objects_list.append(utils.Total_Credits_Class.TotalCredits(branchcode_iter_variable))               
+                    objects_list.append(utils.Regular_SGPA_Class.RegularSGPA(branchcode_iter_variable))               
                 for j in range(len(objects_list)):
                     if objects_list[j].branch == subjects[0]:
                         subjects.pop(0)
                         objects_list[j].subjectList(subjects)
                         break
                 else:
-                    objects_list.append(utils.Total_Credits_Class.TotalCredits(branchcode_iter_variable))
+                    objects_list.append(utils.Regular_SGPA_Class.RegularSGPA(branchcode_iter_variable))
                     subjects.pop(0)
                     objects_list[j+1].subjectList(subjects)
                 
@@ -95,9 +95,12 @@ def SGPA_calculation(input_data,grades,branch_codes):
                     stats_object[i].statsCal(objects_list[i].final_result_df,grades,branch_codes[j][2])
                     stats_object[i].toppersCal(objects_list[i].final_result_df)
                     stats_object[i].stats_df.to_excel(output,sheet_name=branch_codes[j][2]+" Analysis",index=False)
-                    stats_object[i].topper_df.to_excel(output,sheet_name=branch_codes[j][2]+" Analysis",index=False,startrow=len(stats_object[i].stats_df)+2)
+                    stats_object[i].topper_df.to_excel(output,sheet_name=branch_codes[j][2]+" Analysis",index=False,startrow=1,startcol=8)
                     break
             else:
                 return "Details about branch code "+objects_list[i].branch+" is missing in the database. So update the database by logging in"
-        stats_object[0].overall_data.to_excel(output,sheet_name="Overall Analysis",index=False)
+        overall_data=stats_object[0].overall_data
+        for i in range(1,len(objects_list)):
+            overall_data=pd.concat([overall_data,stats_object[i].overall_data])
+        overall_data.to_excel(output,sheet_name="Overall Analysis",index=False)
     return 0

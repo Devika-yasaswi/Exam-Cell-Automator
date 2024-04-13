@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA/SGPA Calculator</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            width: 100vw;
+            height: 100vh;
+            background: url('https://img.freepik.com/free-vector/circles-background-dark-tones_60389-166.jpg?w=1060&t=st=1711706419~exp=1711707019~hmac=abdcfa7aa94c8ee390718a8cbae55511dc40dac951bc15bc4b1c2a3e303fb69d');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        .container{
+            margin: 2rem auto;
+        }
+
+        .header{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo{
+            width: 5rem;
+            margin-right: 1rem;
+        }
+
+        .text h1, .text h3{
+            font-weight: 550;
+            text-transform: uppercase;
+            font-family: sans-serif;
+        }
+
+        .main-heading{
+            font-size: 1.8rem;
+            letter-spacing: 0.05rem;
+            margin-bottom: .2rem;
+        }
+
+        .sub-heading{
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .main{
+            border-radius: .2rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+            background-color: transparent;
+            padding: 2.5rem;
+            border: .1rem solid #fff;
+            box-shadow: rgba(255, 255, 255, 0.55) 0px 4px 15px, rgba(255, 255, 255, 0.62) 0px -4px 15px, rgba(255, 255, 255, 0.62) 0px 0px 0px, rgba(255, 255, 255, 0.67) 0px 0px 0px, rgba(255, 255, 255, 0.99) 0px 0px 0px;
+        }
+
+        .calculation-part h1{
+            font-size: 1.7rem;
+            margin-right: 1rem;
+            display: inline;
+        }
+
+        .select{
+            display: flex;
+            justify-content: left;
+            align-items: center;
+        }
+
+        .select p{
+            margin-right: 1rem;
+            margin-top: .5rem;
+            font-size: 1rem;
+        }
+
+        .calculation-text{
+            font-size: 1.1rem;
+            margin-top: 1.2rem;
+            letter-spacing: .02rem;
+            font-weight: 500;
+            color: red;
+            clear: both;
+        }
+
+        .btns{
+            clear: right;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .btns button{
+            width: 7rem;
+            font-size: 1rem;
+            padding: 0.5rem;
+            background-color: #fff;
+            color: #000;
+            border: transparent;
+            border-radius: .2rem;
+            outline: 0;
+            margin-top: 1.5rem; 
+            margin-bottom: 0.2rem;
+            cursor: pointer;
+            transition: all .3s;
+        }
+
+        .btns button:hover{
+            background: red;
+            color: #fff;
+        }
+        .upload-label{
+            display: inline-block;
+            background-color: #fff;
+            padding: 0.1rem 0.3rem;
+            border: .05rem solid #000;
+            color: #000;
+            font-size: .9rem;
+            cursor: pointer;
+            margin-top: .3rem;
+        }
+
+        #upload-portal-label{
+            margin-left: 4rem;
+        }
+
+        #upload-seating-label{
+            margin-left: .4rem;
+        }
+
+        @media only screen and (max-width: 949px) and (min-width: 300px){
+            body{
+                width: 100vw;
+                height: 100vh;
+                background-repeat: no-repeat;
+            }
+
+            .container{
+                margin: 1rem auto;
+            }
+
+            .header{
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+
+            .logo{
+                width: 3rem;
+            }
+
+            .main-heading{
+                font-size: 1.3rem;
+                margin-bottom: .5rem;
+            }
+
+            .sub-heading{
+                font-size: 1.1rem;
+            }
+
+            .main{
+                border-radius: .2rem;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -40%);
+                padding: .8rem;
+            }
+
+            .calculation-part h1{
+                font-size: 1.2rem;
+            }
+
+            .select p{
+                font-size: .8rem;
+            }
+
+            .calculation-text{
+                letter-spacing: 0;
+                font-size: .8rem;
+            }
+
+            .btns button{
+                padding: .35rem .3rem;
+                width: 4.3rem;
+                font-size: .7rem;
+            }
+
+            .upload-label{
+                padding: 0.1rem 0.15rem;
+                font-size: .7rem;
+                margin-top: .2rem;
+                margin-left: .2rem;
+                border: .05rem solid #000;
+                outline: 0;
+            }
+
+            #upload-portal-label{
+                margin-left: 3.4rem;
+            }
+
+            #upload-seating-label{
+                margin-left: .4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <header class="header">
+            <img src="https://upload.wikimedia.org/wikipedia/en/0/04/Jntuk-logo.png" class="logo">
+            <div class="text">
+                <h1 class="main-heading">University College of Engineering Narasaraopet</h1>
+                <h3 class="sub-heading">Jawaharlal Nehru Technological University Kakinada</h3>
+            </div>
+        </header>
+        <div class="main" id="main">
+            <div class="calculation-part" id="calculation-part">
+                <h1>Seating Arrangement</h1>
+                <div class="select" id="select">
+                    <p><span id="portal-file">Upload the Portal data</span>
+                        <input type="file" accept=".pdf" id="portal-class" hidden>
+                        <label for="portal-class" class="upload-label" id="upload-portal-label">Upload File</label>
+                        <span id="portal-file-chosen" class="file-chosen"></span>
+                    </p>
+                </div>
+                <div class="select" id="select">
+                    <p><span id="seating-file">Upload the Seating instructions</span>
+                        <input type="file" accept=".xlsx" id="seating-class" hidden>
+                        <label for="seating-class" class="upload-label" id="upload-seating-label">Upload File</label>
+                        <span id="seating-file-chosen" class="file-chosen"></span>
+                    </p>
+                </div>
+            </div>
+            <p id="calculation-text" class="calculation-text" style="display: none;"></p>
+            <div class="btns" id="btns">
+                <button class="user-guide" id="user-guide">User Guide</button>
+                <button class="get-result" id="get-result" onclick="getResult()">Get Result</button>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+            
+
+    <!-- <script src="script.js"></script> -->
+    <script>
+        const calculationText = document.getElementById("calculation-text");
+
+        function getFileName(fileName, uploadLabel){
+            const defaultLabel = "Upload File";
+            if (fileName !=""){
+                return uploadLabel.innerHTML = fileName;
+            }
+            else{
+                return uploadLabel.innerHTML = defaultLabel;
+            }
+        }
+
+        const portalBtn = document.getElementById('portal-class');
+
+        portalBtn.addEventListener('change', function(){
+            const fileName = document.getElementById('portal-class').value.replace(/^.*\\/, "");
+            getFileName(fileName, document.getElementById('upload-portal-label'));
+        })
+
+        const seatingBtn = document.getElementById('seating-class');
+
+        seatingBtn.addEventListener('change', function(){
+            const fileName = document.getElementById('seating-class').value.replace(/^.*\\/, "");
+            getFileName(fileName, document.getElementById('upload-seating-label'));
+        })
+                
+        function getResult(){
+            if(document.getElementById("portal-class").value == "") {
+                calculationText.style.display = "block";
+                calculationText.innerHTML = `<p>Please upload portal pdf file</p>`;
+            }
+            else {
+                if(document.getElementById("seating-class").value == "") {
+                    calculationText.style.display = "block";
+                    calculationText.innerHTML = `<p>Please upload seating pdf file</p>`;
+                }
+                else{
+                    calculationText.style.display = "none";
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>
