@@ -6,7 +6,7 @@ urlpatterns= [
     path('Html/login.html',views.login, name='Login'),
     path('Html/Signup.html',views.signup, name='Signup'),
     path('Html/Result Analysis.html', views.resultAnalysis, name='Result Analysis'),
-    path('process_regular_sgpa/',views.process_regular_sgpa, name='Regular SGPA'),
-    path('process_reval_sgpa/',views.process_reval_sgpa,name="Revaluation SGPA"),
+    path('process_regular_sgpa/',views.process_regular_sgpa, name='Regular SGPA')
+    
     
 ]

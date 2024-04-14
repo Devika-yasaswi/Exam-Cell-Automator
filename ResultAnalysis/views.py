@@ -2,10 +2,9 @@ from django.shortcuts import render
 from django.http import FileResponse, JsonResponse
 from utils.SGPA_Calculation import *
 from utils.pdfToDataframe import *
-from utils.branch_wise_analysis import *
-from utils.Styling_cells import *
-from utils.revaluation import *
 from .models import Gradepoints, Branchcodes
+from utils.Styling_cells import *
+from utils.branch_wise_analysis import *
 from pandas import read_excel
 
 # Create your views here.
@@ -61,25 +60,3 @@ def process_regular_sgpa(request):
         else:
             value='Please upload either excel or pdf only'
             return JsonResponse({'message': value},safe=False)
-def process_reval_sgpa(request):
-    grades=[]
-    branch_codes=[]
-    all_records = Gradepoints.objects.all()
-    for i in all_records:
-        grades.append([i.Grade,i.Points,i.Status,i.Presence])
-    all_records = Branchcodes.objects.all()
-    for i in all_records:
-        branch_codes.append([i.Branch,i.Code,i.Abbrevation])
-    if request.method == 'POST':
-        # Get the uploaded file from the request
-        supply_class_file = request.FILES.get('supply_class')
-        supply_gpa_class_file=request.FILES.get('supply_gpa_class')
-        file_mime_type = supply_class_file.content_type
-        if file_mime_type == 'application/pdf':
-            return_data=pdfToDataframe(supply_class_file)
-            reval_calculation(supply_gpa_class_file,return_data,grades,branch_codes)
-            sgpa_styling("Result.xlsx")
-            response = FileResponse(open('Result.xlsx', 'rb'))
-            response['Content-Disposition'] = 'attachment; filename="Result.xlsx"'
-            return response
-            
