@@ -74,8 +74,6 @@ class RegularSGPA:
                         total+=grades[i][1]*data[1]
                         GBM+=grades[i][1]*10
                         pass_status.append(grades[i][2].capitalize())
-                        if grades[i][1] !=0 and grades[i][2].capitalize()=="P":
-                            total_subs+=1
                         break
                 else:
                     return "Details about grade "+data[0]+" is missing in the database. So update the database by logging in"
@@ -86,6 +84,13 @@ class RegularSGPA:
         else:
             temp_data.append("Fail")
         temp_data.append(pass_status.count("F"))
+        student_data=temp_data[1:-4]
+        print(student_data)
+        total_subs=len(student_data)
+        print(total_subs)
+        for entry in student_data:
+            if entry == "-":
+                total_subs -= 1
         try:
             temp_data.append(GBM/total_subs)
         except ZeroDivisionError:

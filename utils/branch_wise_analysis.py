@@ -45,4 +45,4 @@ def branchwise_analysis(file,branch,grades):
         img = drawing.image.Image(strFile)
         img.anchor = 'F2'
         ws.add_image(img)
-        writer.save()
+        writer.close()
