@@ -8,7 +8,8 @@ def SGPA_calculation(input_data,grades,branch_codes):
     roll_list=[]
     try:
         for i in range(len(input_data)):
-            roll_list.append(input_data['Htno'][i][0:5]) #Stores all the available hallticket number series of the provided data
+            if pd.notnull(input_data['Htno'][i]):
+                roll_list.append(input_data['Htno'][i][0:5]) #Stores all the available hallticket number series of the provided data
 
     # Whenever wrong type of excel data is provided then the required columns 'Htno' won't be there so solving that exception
     except KeyError:
@@ -26,8 +27,9 @@ def SGPA_calculation(input_data,grades,branch_codes):
     # creating new dataframe for saving regular data only
     updated_data=pd.DataFrame(columns=input_data.columns)
     for i in range(len(input_data)):
-        if input_data.iloc[i,0][0:5]== roll_series or input_data.iloc[i,0][0:5]==roll_series1:
-            updated_data.loc[len(updated_data.index)]=list(input_data.iloc[i,:])
+        if pd.notnull(input_data['Htno'][i]):
+            if input_data.iloc[i,0][0:5]== roll_series or input_data.iloc[i,0][0:5]==roll_series1:
+                updated_data.loc[len(updated_data.index)]=list(input_data.iloc[i,:])
     #Intializing basic variables
     student_data=[]
     subjects=[]

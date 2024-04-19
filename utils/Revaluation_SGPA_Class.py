@@ -26,16 +26,14 @@ class RevaluationSGPA:
                             for j in student_data:
                                 for grade_list in grades_from_database:
                                     if j==grade_list[0]:
-                                        pass_status.append(grade_list[2].capitalize())                                    
+                                        pass_status.append(grade_list[2])  
+                                        if grade_list[1]!=0 or grade_list[2]=="F":
+                                            total_subs+=1
                             if "F" not in pass_status:
                                 self.regular_gpa_df.iloc[i,-5]="Pass"
                             else:
                                 self.regular_gpa_df.iloc[i,-5]="Fail"
-                            self.regular_gpa_df.iloc[i,-4]=pass_status.count("F")
-                            total_subs=len(list(self.regular_gpa_df.columns))-8
-                            for entry in student_data:
-                                if entry == "-":
-                                    total_subs -= 1
+                            self.regular_gpa_df.iloc[i,-4]=pass_status.count("F")                            
                             self.regular_gpa_df.iloc[i,-3]=self.regular_gpa_df.iloc[i,-7]/total_subs
                         break
                             

@@ -55,6 +55,9 @@ def process_regular_sgpa(request):
             value=SGPA_calculation(df,grades,branch_codes)
             if isinstance(value,str):
                 return JsonResponse({'message': value},safe=False)
+            if selected_branch != None:
+                branchwise_analysis('Result.xlsx',selected_branch,grades)
+            sgpa_styling("Result.xlsx")
             response = FileResponse(open('Result.xlsx', 'rb'))
             response['Content-Disposition'] = 'attachment; filename="Result.xlsx"'
             return response
@@ -82,3 +85,6 @@ def process_reval_sgpa(request):
                 response = FileResponse(open('Result.xlsx', 'rb'))
                 response['Content-Disposition'] = 'attachment; filename="Result.xlsx"'
                 return response
+            
+def cgpa(request):
+    pass

@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Page</title>
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+        rel="stylesheet"
+    />
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            width: 100vw;
+            height: 100vh;
+            background-image: linear-gradient(
+                110deg,
+                rgba(58, 58, 58, 0.6),
+                rgba(55, 108, 88, 0.5)
+                ),
+                url('https://image.slidesdocs.com/responsive-images/background/an-image-of-data-center-facilities-powerpoint-background_cf60ce2734__960_540.jpg');
+            background-position: bottom;
+            background-size: cover;
+            background-repeat: no-repeat;
+            overflow: hidden;
+        }
+
+        .container{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-top: 3rem;
+        }
+
+        .branch-table, .grade-table{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        table{
+            border-collapse: collapse;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        caption{
+            font-size: 1.3rem;
+            color: #fff;
+        }
+        
+        td, th {
+            padding: .4rem .6rem;
+            border: .05rem solid #ddd;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+            color: #000;
+        }
+
+        tr:nth-child(odd){
+            background-color: #ddd;
+            color: #000;
+        }
+        
+        th{
+            font-size: 1.2rem;
+            background-color: lightblue;
+            color: #000;
+        }
+
+        td{
+            font-size: 1.1rem;
+        }
+
+        .table-btns{
+            display: flex; 
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            margin-left: 1rem;
+        }
+
+        .table-btns button{
+            padding: .4rem 1rem;
+            border: .05rem solid #333;
+            outline: none;
+            border-radius: .2rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .table-btns a{
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .delete{
+            text-decoration: none;
+            color: #fff;
+            transition: all .3s;
+        }
+        
+        .add1, .add2{
+            background-color: red;
+            color: #fff;
+            margin: .5rem 0;
+            transition: all .3s;
+        }
+        
+        .add1:hover, .add2:hover{
+            background-color: green;
+        }
+
+        .add-grade, .add-branch{
+            width: 30rem;
+            height: 20rem;
+            background-image: linear-gradient(
+                110deg,
+                rgba(0, 0, 0, 0.4),
+                rgba(15, 18, 8, 0.6)
+                ),
+                url('https://st4.depositphotos.com/1741969/29457/i/450/depositphotos_294571810-stock-photo-blackground-of-abstract-glitter-lights.jpg');
+            background-position: bottom;
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: #fff;
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 200;
+        }
+        
+        .add-grade h1, .add-branch h1{
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .add-grade form, .add-branch form{
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .add-grade label, .add-branch label{
+            font-size: 1.2rem;
+        }
+        
+        .add-grade input, .add-branch input{
+            font-size: 1.05rem;
+            outline: none;
+            border: .05rem solid #333;
+            border-radius: .2rem;
+            padding: .1rem .2rem;
+            margin: 0 .2rem 0 .3rem;
+        }
+
+        .add-grade input::placeholder, .add-branch input::placeholder{
+            font-size: 1.1rem;
+        }
+        
+        i{
+            font-size: 2rem;
+            position: absolute;
+            top: 2%;
+            right: 2%;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        i:hover{
+            color: red;
+        }
+        
+        .add-btn{
+            padding: .4rem .6rem;
+            outline: none;
+            border: .1rem solid transparent;
+            border-radius: .2rem;
+            font-size: 1.05rem;
+            background: darkgreen;
+            color: #fff;
+            transition: all .3s;
+            cursor: pointer;
+        }
+        
+        .add-btn:hover{
+            background: #fff;
+            color: darkgreen;
+        }
+        
+        .status-input{
+            margin-left: .5rem;
+            margin-right: .2rem;
+        }
+
+        .modify1, .modify2{
+            background-color: green;
+            color: #fff;
+            margin: .5rem 0;
+            transition: all .3s;
+        }
+
+        .modify1:hover, .modify2:hover{
+            background-color: royalblue;
+        }
+
+        .modify-grade, .modify-branch{
+            width: 30rem;
+            height: 22rem;
+            background-image: linear-gradient(
+                110deg,
+                rgba(0, 0, 0, 0.5),
+                rgba(15, 18, 8, 0.5)
+                ),
+                url('https://media.istockphoto.com/id/1623303770/photo/creative-background-image-is-blurred-evening-city-lights-and-light-snowfall.jpg?b=1&s=612x612&w=0&k=20&c=--I6QisPR7yGmgujOI2co8U3FIK5tBv6xAjMup67ghc=');
+            background-position: bottom;
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: #fff;
+            display: none;
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 200;
+        }
+
+        .modify-grade h1, .modify-branch h1{
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .modify-grade form, .modify-branch form{
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .modify-grade label, .modify-branch label{
+            font-size: 1.2rem;
+        }
+
+        .modify-grade input, .modify-branch input{
+            font-size: 1.05rem;
+            outline: none;
+            border: .05rem solid #333;
+            border-radius: .2rem;
+            padding: .1rem .2rem;
+            margin: 0 .2rem 0 .3rem;
+        }
+
+        .modify-grade input::placeholder, .modify-branch input::placeholder{
+            font-size: 1.05rem;
+        }
+        
+        .modify-btn{
+            font-size: 1.05rem;
+            padding: .3rem .5rem;
+            outline: none;
+            margin-top: 1rem;
+            border: .1rem solid transparent;
+            border-radius: .2rem;
+            background: #fff;
+            color: #000;
+            transition: all .3s;
+            cursor: pointer;
+        }
+        
+        .modify-btn:hover{
+            background: lightgreen;
+            color: #000;
+        }
+
+        .delete1, .delete2{
+            background-color: royalblue;
+            color: #fff;
+            margin: .5rem 0;
+            transition: all .3s;
+        }
+        
+        .delete1:hover, .delete2:hover{
+            background-color: red;
+        }
+
+        .delete-grade, .delete-branch{
+            width: 30rem;
+            height: 15rem;
+            background-image: linear-gradient(
+                110deg,
+                rgba(0, 0, 0, 0.5),
+                rgba(15, 18, 8, 0.5)
+                ),
+                url('https://img.freepik.com/free-vector/realistic-neon-lights-background_23-2148907367.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1712880000&semt=ais');
+            background-position: bottom;
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: #fff;
+            display: none;
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 200;
+        }
+
+        .delete-grade h1, .delete-branch h1{
+            margin: 3rem 0 2rem 0;
+            text-align: center;
+        }
+        
+        .delete-grade form, .delete-branch form{
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .delete-grade label, .delete-branch label{
+            font-size: 1.2rem;
+        }
+
+        .delete-grade input, .delete-branch input{
+            font-size: 1.05rem;
+            outline: none;
+            border: .05rem solid #333;
+            border-radius: .2rem;
+            padding: .1rem .2rem;
+            margin: 0 .2rem 0 .3rem;
+        }
+
+        .delete-grade input::placeholder, .delete-branch input::placeholder{
+            font-size: 1.1rem;
+        }
+        
+        .delete-btn{
+            font-size: 1.05rem;
+            padding: .3rem .5rem;
+            outline: none;
+            margin-top: 2rem;
+            border: .1rem solid transparent;
+            border-radius: .2rem;
+            background: lightgreen;
+            transition: all .3s;
+            cursor: pointer;
+        }
+        
+        .delete-btn:hover{
+            background: #444;
+            color: #eee;
+        }
+
+        @media only screen and (max-width: 1120px) and (min-width: 300px){
+            .container{
+                padding-top: 1rem;
+                flex-direction: column;
+            }
+            
+            .branch-table, .grade-table{
+                margin: 1rem auto;
+            }
+        }
+
+        @media only screen and (max-width: 650px){
+            caption{
+                font-size: 1rem;
+                color: #fff;
+            }
+
+            .grade-table{
+                margin-top: 4rem;
+            }
+
+            .branch-table{
+                margin-top: 2rem;
+            }
+            
+            td, th {
+                padding: .2rem .6rem;
+                border: .05rem solid #ddd;
+                text-align: center;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+                color: #000;
+            }
+
+            tr:nth-child(odd){
+                background-color: #ddd;
+                color: #000;
+            }
+            
+            th{
+                font-size: 1.1rem;
+                background-color: lightblue;
+                color: #000;
+            }
+
+            td{
+                font-size: 0.9rem;
+            }
+
+            td a{
+                text-decoration: none;
+            }
+
+            .table-btns{
+                display: flex; 
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: center;
+                margin-left: .8rem;
+            }
+
+            .table-btns button{
+                padding: .2rem .8rem;
+                border: .05rem solid #333;
+                outline: none;
+                border-radius: .1rem;
+                cursor: pointer;
+                font-size: .8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="grade-table">
+            <table id="grades">
+                <caption>Grade Points Table</caption>
+                <thead>
+                    <tr>
+                        <th>Grade</th>
+                        <th>Points</th>
+                        <th>Status</th>
+                        <th>Presence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for gradepoint in gradepoints %}
+                    <tr>
+                        <td>{{ gradepoint.Grade }}</td>
+                        <td>{{ gradepoint.Points }}</td>
+                        <td>{{ gradepoint.Status }}</td>
+                        <td>{{ gradepoint.Presence }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="table-btns">
+                <button class="add1" id="add1">Add</button>
+                <button class="modify1" id="modify1">Modify</button>
+                <button class="delete1" id="delete1">Delete</button>
+            </div>
+
+            <div class="add-grade" id="add-grade">
+                <h1>Add Entry to Grade Points</h1>
+                <i class="ri-close-line"></i>
+                <form action="{% url 'add_gradepoint' %}" method="post">
+                    {% csrf_token %}
+                    <label for="Grade">Grade:</label>
+                    <input type="text" id="Grade" name="Grade" placeholder="Enter Grade" required autofocus><br><br>
+                    
+                    <label for="Points">Points:</label>
+                    <input type="number" id="Points" name="Points" placeholder="Enter Points" required><br><br>
+                    
+                    <label for="Status">Status:</label>
+                    <input type="radio" value="P" id="P" name="Status" class="status-input" required>P
+                    <input type="radio" value="N" id="N" name="Status" class="status-input" required>N
+                    <br><br>
+                    
+                    <label for="Presence">Presence:</label>
+                    <select name="Presence" id="Presence" required>
+                        <option value="" selected disabled hidden>Select</option>
+                        <option value="PRESENT">PRESENT</option>
+                        <option value="ABSENT">ABSENT</option>
+                    </select><br><br>
+                        
+                    <button type="submit" class="add-btn" onclick="gradeAdd()">Add Grade</button>
+                </form>
+            </div>
+
+            <div class="modify-grade" id="modify-grade">
+                <h1>Modify Grade Points</h1>
+                <i class="ri-close-line"></i>
+                <form action="{% url 'modify_gradepoint' %}" method="post">
+                    {% csrf_token %}
+                    <label for="gradeValue">Enter Grade to Modify:</label>
+                    <input type="text" id="gradeValue" name="gradeValue" placeholder="Enter Grade" required autofocus><br><br>
+                    
+                    <label for="newPoints">Points:</label>
+                    <input type="number" id="newPoints" name="newPoints" placeholder="Enter New Points" required><br><br>
+                    
+                    <label for="newStatus">Status:</label>
+                    <input type="radio" value="P" id="P" name="newStatus" class="status-input" required>P
+                    <input type="radio" value="N" id="N" name="newStatus" class="status-input" required>N
+                    <br><br>
+                    
+                    <label for="newPresence">Presence:</label>
+                    <select name="newPresence" id="newPresence" required>
+                        <option value="" selected disabled hidden>Select</option>
+                        <option value="PRESENT">PRESENT</option>
+                        <option value="ABSENT">ABSENT</option>
+                    </select><br><br>
+                    <button type="button" class="modify-btn" onclick="gradeModify()">Modify Grade</button>
+                    
+                    <!-- Include the CSRF token -->
+                    <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
+                </form>
+            </div>
+
+            <div class="delete-grade" id="delete-grade">
+                <i class="ri-close-line"></i>
+                <h1>Delete Entry from Grade Points</h1>
+                <form>
+                    {% csrf_token %}
+                    <label for="gradeInput">Enter Grade to Delete:</label>
+                    <input type="text" id="gradeInput" name="grade" class="remove-grade" required autofocus>
+                    <button type="button" class="delete-btn" onclick="gradeDelete()">Delete Grade</button>
+
+                    <!-- Include the CSRF token -->
+                    <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
+                </form>
+            </div>
+        </div>
+
+        <div class="branch-table">
+            <table id="branches">
+                <caption>Branch Codes Table</caption>
+                <thead>
+                    <tr>
+                        <th>Branch</th>
+                        <th>Code</th>
+                        <th>Abbrevation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for branchcode in branchcodes %}
+                    <tr>
+                        <td>{{ branchcode.Branch }}</td>
+                        <td>{{ branchcode.Code }}</td>
+                        <td>{{ branchcode.Abbrevation }}</td>
+                    </tr>
+                    {% endfor %}            
+                </tbody>
+            </table>
+            <div class="table-btns">
+                <button class="add2" id="add2">Add</button>
+                <button class="modify2" id="modify2">Modify</button>
+                <button class="delete2" id="delete2">Delete</button>            
+            </div>
+
+            <div class="add-branch" id="add-branch">
+                <h1>Add Entry to Branch Codes</h1>
+                <i class="ri-close-line"></i>
+                <form action="{% url 'add_branchcode' %}" method="post">
+                    {% csrf_token %}
+                    <label for="Branch">Branch:</label>
+                    <input type="text" id="Branch" name="Branch" placeholder="Enter Branch" required autofocus><br><br>
+                    
+                    <label for="Code">Code:</label>
+                    <input type="number" id="Code" name="Code" placeholder="Enter Code" required><br><br>
+                    
+                    <label for="Abbrevation">Abbrevation:</label>
+                    <input type="text" id="Abbrevation" name="Abbrevation" placeholder="Enter Abbrevation" required><br><br>
+                        
+                    <button type="submit" class="add-btn" onclick="branchAdd()">Add Branch</button>
+                </form>
+            </div>
+
+            <div class="modify-branch" id="modify-branch">
+                <h1>Modify Branch Points</h1>
+                <i class="ri-close-line"></i>
+                <form action="{% url 'modify_branchcode' %}" method="post">
+                    {% csrf_token %}
+                    <label for="branchValue">Enter Branch to Modify:</label>
+                    <input type="text" id="branchValue" name="branchValue" placeholder="Enter Branch" required autofocus><br><br>
+                    
+                    <label for="newCode">Code:</label>
+                    <input type="number" id="newCode" name="newCode" placeholder="Enter New Code" required><br><br>
+
+                    <label for="newAbbrevation">Abbrevation:</label>
+                    <input type="text" id="newAbbrevation" name="newAbbrevation" placeholder="Enter New Abbrevation" required><br><br>                    
+
+                    <button type="button" class="modify-btn" onclick="branchModify()">Modify Branch</button>
+                    
+                    <!-- Include the CSRF token -->
+                    <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
+                </form>
+            </div>
+
+            <div class="delete-branch" id="delete-branch">
+                <i class="ri-close-line"></i>
+                <h1>Delete Entry from Branch Codes</h1>
+                <form>
+                    {% csrf_token %}
+                    <label for="branchInput">Enter Branch to Delete:</label>
+                    <input type="text" id="branchInput" name="branch" class="remove-branch" required autofocus>
+                    <button type="button" class="delete-btn" onclick="branchDelete()">Delete Branch</button>
+
+                    <!-- Include the CSRF token -->
+                    <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const csrfToken = "{{ csrf_token }}";
+
+        const gradeAddForm = document.getElementById("add-grade");
+        const gradeModifyForm = document.getElementById("modify-grade");
+        const gradeDeleteForm = document.getElementById("delete-grade");
+        
+        const branchAddForm = document.getElementById("add-branch");
+        const branchModifyForm = document.getElementById('modify-branch');
+        const branchDeleteForm = document.getElementById("delete-branch");
+
+        const addGrade = document.getElementById("add1");
+        const modifyGrade = document.getElementById("modify1");
+        const deleteGrade = document.getElementById("delete1");
+        
+        const addBranch = document.getElementById("add2");
+        const modifyBranch = document.getElementById("modify2");
+        const deleteBranch = document.getElementById("delete2");
+
+        const closeBtn = document.querySelectorAll('.ri-close-line');
+
+        addGrade.addEventListener('click', function(){
+            gradeAddForm.style.display = "block";
+        })
+
+        modifyGrade.addEventListener('click', function() {
+            gradeModifyForm.style.display = "block";
+        })
+        
+        deleteGrade.addEventListener('click', function(){
+            gradeDeleteForm.style.display = "block";
+        })
+        
+        addBranch.addEventListener('click', function(){
+            branchAddForm.style.display = "block";
+        })
+        
+        modifyBranch.addEventListener('click', function() {
+            branchModifyForm.style.display = "block";
+        })
+
+        deleteBranch.addEventListener('click', function(){
+            branchDeleteForm.style.display = "block";
+        })
+
+        function gradeAdd(){
+            const grade = document.getElementById('Grade').value;
+            const points = document.getElementById('Points').value;
+
+            var status;
+            var radioVal = document.getElementsByName('Status'); 
+            for (i = 0; i < radioVal.length; i++) {
+                if (radioVal[i].checked){
+                    status = radioVal[i].value;
+                }
+            }
+
+            const presence = document.getElementById('Presence').value;
+            const csrfToken = document.getElementById('csrfToken').value; // Fetch CSRF token
+
+            // Make an AJAX request to add_gradepoint view
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/add_gradepoint/');
+            
+            // Set the request header for CSRF token
+            xhr.setRequestHeader('X-CSRFToken', csrfToken);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        alert('Gradepoint added successfully.');
+                        // Reload the page or update the table as needed
+                        location.reload();
+                    } else {
+                        alert('Failed to add gradepoint. ' + response.message);
+                    }
+                } else {
+                    alert('Error adding gradepoint.');
+                }
+            };
+            xhr.send('grade=' + encodeURIComponent(grade) + '&points=' + encodeURIComponent(points) + '&status=' + encodeURIComponent(status) + '&presence=' + encodeURIComponent(presence));   
+        }
+
+        function gradeModify(){
+            const grade = document.getElementById('gradeValue').value;
+            const newPoints = document.getElementById('newPoints').value;
+
+            var newStatus;
+            var radioVal = document.getElementsByName('newStatus'); 
+            for (i = 0; i < radioVal.length; i++) {
+                if (radioVal[i].checked){
+                    newStatus = radioVal[i].value;
+                }
+            }
+
+            const newPresence = document.getElementById('newPresence').value;
+            const csrfToken = document.getElementById('csrfToken').value; // Fetch CSRF token
+
+            // Make an AJAX request to modify_gradepoint view
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/modify_gradepoint/');
+            
+            // Set the request header for CSRF token
+            xhr.setRequestHeader('X-CSRFToken', csrfToken);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        alert('Gradepoint modified successfully.');
+                        // Reload the page or update the table as needed
+                        location.reload();
+                    } else {
+                        alert('Failed to modify gradepoint. ' + response.message);
+                    }
+                } else {
+                    alert('Error modifying gradepoint.');
+                }
+            };
+            xhr.send('grade=' + encodeURIComponent(grade) + '&points=' + encodeURIComponent(newPoints) + '&status=' + encodeURIComponent(newStatus) + '&presence=' + encodeURIComponent(newPresence));
+        }
+
+        function gradeDelete() {            
+            const grade = document.getElementById('gradeInput').value;
+            const csrfToken = document.getElementById('csrfToken').value; // Fetch CSRF token
+            
+            // Make an AJAX request to delete_gradepoint view
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/delete_gradepoint/');
+
+            xhr.setRequestHeader('X-CSRFToken', csrfToken);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        alert('Gradepoint deleted successfully.');
+                        // Reload the page or update the table as needed
+                        location.reload();
+                    } else {
+                        alert('Failed to delete gradepoint. ' + response.message);
+                    }
+                } else {
+                    alert('Error deleting gradepoint.');
+                }
+            };
+            xhr.send('grade=' + encodeURIComponent(grade));
+        }
+
+        function branchAdd(){
+            const branch = document.getElementById('Branch').value;
+            const code = document.getElementById('Code').value;
+            const abbrevation = document.getElementById('Abbrevation').value;
+            const csrfToken = document.getElementById('csrfToken').value; // Fetch CSRF token
+
+            // Make an AJAX request to add_branchcode view
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/add_branchcode/');
+            
+            // Set the request header for CSRF token
+            xhr.setRequestHeader('X-CSRFToken', csrfToken);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        alert('Branchcode added successfully.');
+                        // Reload the page or update the table as needed
+                        location.reload();
+                    } else {
+                        alert('Failed to add branchcode. ' + response.message);
+                    }
+                } else {
+                    alert('Error adding branchcode.');
+                }
+            };
+            xhr.send('branch=' + encodeURIComponent(branch) + '&code=' + encodeURIComponent(code) + '&abbrevation=' + encodeURIComponent(abbrevation));   
+        }
+
+        function branchModify(){
+            const branch = document.getElementById('branchValue').value;
+            const newCode = document.getElementById('newCode').value;
+            const newAbbrevation = document.getElementById('newAbbrevation').value;
+            const csrfToken = document.getElementById('csrfToken').value; // Fetch CSRF token
+
+            // Make an AJAX request to modify_branchcode view
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/modify_branchcode/');
+            
+            // Set the request header for CSRF token
+            xhr.setRequestHeader('X-CSRFToken', csrfToken);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        alert('Branchcode modified successfully.');
+                        // Reload the page or update the table as needed
+                        location.reload();
+                    } else {
+                        alert('Failed to modify branchcode. ' + response.message);
+                    }
+                } else {
+                    alert('Error modifying branchcode.');
+                }
+            };
+            xhr.send('branch=' + encodeURIComponent(branch) + '&code=' + encodeURIComponent(newCode) + '&abbrevation=' + encodeURIComponent(newAbbrevation));
+        }
+
+        function branchDelete() {
+            const branch = document.getElementById('branchInput').value;
+            const csrfToken = document.getElementById('csrfToken').value; // Fetch CSRF token
+            
+            // Make an AJAX request to delete_branchcode view
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/delete_branchcode/');
+
+            xhr.setRequestHeader('X-CSRFToken', csrfToken);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        alert('Branchcode deleted successfully.');
+                        // Reload the page or update the table as needed
+                        location.reload();
+                    } else {
+                        alert('Failed to delete branchcode. ' + response.message);
+                    }
+                } else {
+                    alert('Error deleting branchcode.');
+                }
+            };
+            xhr.send('branch=' + encodeURIComponent(branch));
+        }
+
+        closeBtn.forEach(icon => {
+            icon.addEventListener('click', () => {
+                const popup = icon.parentElement;
+                popup.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
