@@ -45,3 +45,15 @@ def sgpa_styling(file):
                 cell_object.alignment = Alignment(wrap_text=True)
                     
     wb.save(file)
+def cgpa_styling(file):
+    wb=load_workbook(file)
+    for ws in wb.sheetnames:
+        sheet = wb[ws]
+        for column in sheet.columns:
+            max_length = 0                
+            cell_object = column[0]  # Assuming you want to get the column name from the first row
+            column_name = cell_object.value  # Assuming the first row contains the column names
+            if column_name == "Roll No":
+                sheet.column_dimensions[column[0].column_letter].width = 11
+            cell_object.alignment = Alignment(wrap_text=True)
+    wb.save(file)

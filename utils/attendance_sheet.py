@@ -7,8 +7,6 @@ import math
 
 
 
-
-
 def generate_attendance_sheet(filename,portal_data,seating_plan):
 
     workbook = openpyxl.Workbook()
@@ -32,9 +30,12 @@ def generate_attendance_sheet(filename,portal_data,seating_plan):
             length = length_dataFrame(sheet2.cell(k, 1).value, sheet2.cell(k, 3).value,portal_data)
             x = length / 18
             y = math.ceil(x)
-            no = 1
+            # no = 1
 
             for page_num in range(y):
+
+                if page_num % 2 == 0:  # Reset numbering every 2 pages
+                    no = 1
     
                 #rectangle measures
                 left_margin_cm = 0.8  # in cm
@@ -108,9 +109,9 @@ def generate_attendance_sheet(filename,portal_data,seating_plan):
                 c.setFont("Helvetica-Bold", 14)    
 
                 text5="Name of Exam:"
-                c.drawString(100,page_height-top_margin-(6*height)+16,text5)
+                c.drawString(70,page_height-top_margin-(6*height)+16,text5)
 
-                c.drawString(200,page_height-top_margin-(6*height)+16,sheet1.cell(2, 3).value)
+                c.drawString(170,page_height-top_margin-(6*height)+16,sheet1.cell(2, 3).value)
 
 
                 text6=" Date:"
@@ -124,11 +125,33 @@ def generate_attendance_sheet(filename,portal_data,seating_plan):
 
 
                 text7="Subject:"
-                c.drawString(146,page_height-top_margin-(7*height)+16,text7)
+                c.drawString(116,page_height-top_margin-(7*height)+16,text7)
+                # data1 = pdfToDataframe(r'c:\Users\HP\Downloads\03_1233931.pdf')
+
+                # for index, row in data1.iterrows():
+                #     if row['subcode'] == sheet2.cell(k, 3).value:
+                        
+                #         subject_name = row['subname']
+                #         break
+                
+
+                c.drawString(170,page_height-top_margin-(7*height)+16,sheet2.cell(k, 9).value)
 
 
                 text8="Lecture Hall:"
                 c.drawString(355,page_height-top_margin-(7*height)+16,text8)
+
+                parts = sheet2.cell(k, 6).value.split(',')
+                # result = parts[page_num]
+                # print(len(parts))
+
+
+                if page_num % y < 2:
+                    lecture_hall_text = parts[0]
+                else:
+                    lecture_hall_text = parts[1]
+        
+                c.drawString(440,page_height-top_margin-(7*height)+16, lecture_hall_text)
 
 
                 c.rect(left_margin, page_height-top_margin-(9*height),page_width-(2*left_margin), (2*height)+10)
@@ -202,9 +225,7 @@ def generate_attendance_sheet(filename,portal_data,seating_plan):
 
                 c.drawString(18*left_margin,page_height-top_margin-(10*height)+35,"Signature of Candidate")
 
-                parts = sheet2.cell(k, 6).value.split(',')
-                # result = parts[page_num]
-                print(len(parts))
+                
 
     
 

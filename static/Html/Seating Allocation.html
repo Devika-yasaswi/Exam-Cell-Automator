@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +16,7 @@
         body{
             width: 100vw;
             height: 100vh;
-            background: url('https://img.freepik.com/free-vector/circles-background-dark-tones_60389-166.jpg?w=1060&t=st=1711706419~exp=1711707019~hmac=abdcfa7aa94c8ee390718a8cbae55511dc40dac951bc15bc4b1c2a3e303fb69d');
+            background: url("{% static 'Images/Seating Allocation.avif' %}");
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -253,9 +254,13 @@
     </style>
 </head>
 <body>
+    <div id="overlay">
+        <div id="loading-spinner"></div>
+        <p id="loading-text">Processing...</p>
+    </div>
     <div class="container" id="container">
         <header class="header">
-            <img src="https://upload.wikimedia.org/wikipedia/en/0/04/Jntuk-logo.png" class="logo">
+            <img src="{% static 'Images/JNTUK logo.png' %}" class="logo">
             <div class="text">
                 <h1 class="main-heading">University College of Engineering Narasaraopet</h1>
                 <h3 class="sub-heading">Jawaharlal Nehru Technological University Kakinada</h3>
@@ -330,7 +335,9 @@
                     calculationText.innerHTML = `<p>Please upload seating pdf file</p>`;
                 }
                 else{
-                    calculationText.style.display = "none";                    
+                    calculationText.style.display = "none";   
+                    const overlay = document.getElementById("overlay");
+                    overlay.style.display = "flex";                 
                     const formData = new FormData();
                     const portal_data=document.getElementById("portal-class").files[0];
                     formData.append('portal_data',portal_data)
@@ -345,7 +352,7 @@
                         }
                     })
                     .then(response =>  {
-                        
+                        overlay.style.display = "none";
                         if (response.ok) {                                    
                             const contentType = response.headers.get('Content-Type');
                             if (contentType && contentType.includes('application/json')) {

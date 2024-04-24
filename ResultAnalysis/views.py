@@ -6,6 +6,7 @@ from .models import Gradepoints, Branchcodes
 from utils.Styling_cells import *
 from utils.branch_wise_analysis import *
 from utils.revaluation import reval_calculation
+from utils.CGPA_calculation import cgpa_calculation,objects_list
 from pandas import read_excel
 
 # Create your views here.
@@ -87,7 +88,23 @@ def process_reval_sgpa(request):
                 return response
             
 def cgpa(request):
+    branch_codes=[]
+    all_records = Branchcodes.objects.all()
+    for i in all_records:
+        branch_codes.append([i.Branch,i.Code,i.Abbrevation])
     sem_files=[]
     for i in range(8):
         sem_files.append(request.FILES.get('cgpa_class'+str(i+1)))
-        sem_files[i]
+        if sem_files[i]!=None:
+            cgpa_calculation(sem_files[i],i+1)
+    for obj in objects_list:
+        obj.cgpa_cal()
+    with pd.ExcelWriter("Result.xlsx",engine='openpyxl',mode='w') as output:
+        for i in range(len(objects_list)):
+            for j in range(len(branch_codes)):
+                if objects_list[i].branch==branch_codes[j][1]:
+                    objects_list[i].cgpa_df.to_excel(output,sheet_name=branch_codes[j][2],index=False)
+    cgpa_styling("Result.xlsx")
+    response = FileResponse(open('Result.xlsx', 'rb'))
+    response['Content-Disposition'] = 'attachment; filename="Result.xlsx"'
+    return response

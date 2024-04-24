@@ -39,7 +39,7 @@ def reval_calculation(regular_gpa_file,supply_result_df,grades_from_database,bra
     if branch_wise:
         branchwise_analysis('Result.xlsx',branches_in_regular_SGPA_file[0],grades_from_database)
     else:
-        with ExcelWriter("Result.xlsx",engine='openpyxl',mode='w') as output:
+        with ExcelWriter("Result.xlsx",engine='openpyxl',mode='a',if_sheet_exists="overlay") as output:
             overall_data=stats_object[0].overall_data
             for i in range(1,len(objects_list)):
                 overall_data=pd.concat([overall_data,stats_object[i].overall_data])
