@@ -1103,11 +1103,24 @@
                                         formArray.splice(request[0]-1, 1, request[1].name);
                                         calculationText.style.display = "none";
                                         status = true;
+                                        const formData = new FormData();
+
+                                        var i = 0;
+                                        formArray.forEach(index => {
+                                            let value = index.split('.')[0];
+                                            if (value != ""){
+                                                formData.append('cgpa_class' + (i+1), document.getElementById("cgpa-class" + (formArray.indexOf(index)+1)).files[0]);
+                                            }
+                                            else{
+                                                formData.append('cgpa_class' + (i+1), "");
+                                            }
+                                            i += 1; 
+                                        })
                                         const overlay = document.getElementById("overlay");
                                         overlay.style.display = "flex";
                                         fetch('/process_cgpa/', {
                                             method: 'POST',
-                                            body: formArray,
+                                            body: formData,
                                             headers: {
                                                 'X-CSRFToken': csrfToken
                                             }
@@ -1145,7 +1158,6 @@
                                             }                          
                                         })
                                         .catch(error => console.error("Error:", error));
-                                        console.log(formArray);
                                         break;
                                     }
                                     else{

@@ -8,6 +8,6 @@ urlpatterns= [
     path('Html/Result Analysis.html', views.resultAnalysis, name='Result Analysis'),
     path('process_regular_sgpa/',views.process_regular_sgpa, name='Regular SGPA'),
     path('process_reval_sgpa/',views.process_reval_sgpa,name="Reval SGPA"),
-    path('process/cgpa',views.cgpa,name='CGPA')
+    path('process_cgpa/',views.cgpa,name='CGPA')
     
 ]

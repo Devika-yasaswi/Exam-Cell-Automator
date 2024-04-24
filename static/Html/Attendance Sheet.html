@@ -139,6 +139,30 @@
             margin-left: .4rem;
         }
 
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+            display: none; /* Initially hidden */
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Align items vertically */
+            pointer-events: none;
+            z-index: 999;
+        }
+          
+        #loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
         @media only screen and (max-width: 949px) and (min-width: 300px){
             body{
                 width: 100vw;
@@ -257,6 +281,7 @@
 
     <!-- <script src="script.js"></script> -->
     <script>
+        const csrfToken = "{{ csrf_token }}";
         const calculationText = document.getElementById("calculation-text");
 
         function getFileName(fileName, uploadLabel){
@@ -295,6 +320,49 @@
                 }
                 else{
                     calculationText.style.display = "none";
+                    
+                    const formData = new FormData();
+                    const portal_data=document.getElementById("portal-class").files[0];
+                    formData.append('portal_data',portal_data)
+                    const seating_plan=document.getElementById("seating-class").files[0];
+                    formData.append('seating_plan',seating_plan)
+                    fetch('/process_attendance_sheet/', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': csrfToken
+                        }
+                    })
+                    .then(response =>  {
+                        
+                        if (response.ok) {                                    
+                            const contentType = response.headers.get('Content-Type');
+                            if (contentType && contentType.includes('application/json')) {
+                                return response.json(); // Handle JSON response
+                            } else {
+                                return response.blob(); // Handle file download response
+                            } 
+                        }
+                    })
+                    .then(data => {
+                        if (data instanceof Blob) {
+                            const url = window.URL.createObjectURL(data);
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.setAttribute('download', 'Result.pdf');
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            window.URL.revokeObjectURL(url);
+                        }                                                          
+                        else if (data.hasOwnProperty('message')) {
+                            // Display the message on the web page                                   
+                            if (calculationText) {                                        
+                                calculationText.style.display = "block";
+                                calculationText.innerHTML = '<p>'+data.message+'</p>';
+                            }                          
+                        }
+                    })
                 }
             }
         }

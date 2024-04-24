@@ -87,4 +87,7 @@ def process_reval_sgpa(request):
                 return response
             
 def cgpa(request):
-    pass
+    sem_files=[]
+    for i in range(8):
+        sem_files.append(request.FILES.get('cgpa_class'+str(i+1)))
+        sem_files[i]
